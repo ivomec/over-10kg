@@ -309,7 +309,7 @@ function populateContent(data) {
                 <div class="info-grid">
                     <div class="info-card" style="grid-column:1/-1; border-top:none; padding: 10px;">
                         <h3>🗺️ 네이버 지도로 위치 확인하기</h3>
-                        <iframe src="https://new-map.naver.com/p/entry/place/16083453?c=15.00,0,0,0,dh" 
+                        <iframe src="https://map.naver.com/v5/embed/16083453?c=126.8543059,35.1318082,15,0,0,0,dh" 
                                 width="100%" 
                                 height="450" 
                                 style="border:0; border-radius: 15px;" 
