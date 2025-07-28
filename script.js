@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       "extraction": {
         "headerTitle": "🦷😿 우리 댕댕이 아픈 치아 치료 😿🦷",
-        "headerSubtitle": "❤️ 아이의 고통을 덜어주는 발치 비용을 투명하게 안내해요 (10kg&ge;) ❤️",
+        "headerSubtitle": "❤️ 아이의 고통을 덜어주는 발치 비용을 투명하게 안내해요 (10kg≥) ❤️",
         "costs": [
             { "title": "🦷 뿌리 1개 발치 (앞니 등)", "description": "<strong>일반 쏙!:</strong> 많이 흔들리는 치아<br><strong>수술 샥!:</strong> 잇몸 절개&봉합 포함", "prices": [{ "label": "일반", "value": "33000" }, {"label": "수술", "value": "66000"}] },
             { "title": "🦷🦷 뿌리 2개 발치 (작은어금니)", "description": "<strong>일반 쏙! :</strong> 많이 흔들리는 치아<br><strong>수술 샥! :</strong> 잇몸 절개&봉합 포함", "prices": [{ "label": "일반", "value": "77000" }, {"label": "수술", "value": "140000"}] },
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       },
       "addons": {
-          "headerTitle": "💊 추가 처치 비용 (10kg&ge;) 💊",
+          "headerTitle": "💊 추가 처치 비용 (10kg≥) 💊",
           "headerSubtitle": "💖 10kg 이상 아이들을 위한 맞춤 케어 비용 안내 💖",
           "costs": [
               { "borderColor": "#f06292", "titleColor": "#c2185b", "title": "🪄 통증 관리", "prices": [{ "label": "💉 진통 주사(세레니아)", "value": "25,000원 ~" }, { "label": "🎯 국소 마취", "value": "12,000원 ~" }, { "label": "✨ 무통 주사", "value": "50,000원 ~"}, { "label": "🩹 진통 패치", "value": "50,000원 ~" }] },
