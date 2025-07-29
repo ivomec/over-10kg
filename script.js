@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "headerTitle": "🦷✨ 우리 댕댕이 반짝반짝 스케일링 ✨🦷",
         "headerSubtitle": "💖 사랑과 정성을 담아! 🌈 체중별 합리적인 혜택가로 안내합니다! 💖",
         "packages": [
-          { "borderColor": "#20c997", "titleColor": "#20c997", "title": "🐕‍𦺺 10kg ~ 15kg 🐕‍🦺", "items": ["💧 술 전 수액 처치", "🌬️ 산소 처치", "💉 술 전 주사 마취", "😴 호흡 마취 <small>(기본 1시간)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱"], "originalPrice": 634000, "discountPrice": 388000 },
+          { "borderColor": "#20c997", "titleColor": "#20c997", "title": "🐕‍🦺 10kg ~ 15kg 🐕‍🦺", "items": ["💧 술 전 수액 처치", "🌬️ 산소 처치", "💉 술 전 주사 마취", "😴 호흡 마취 <small>(기본 1시간)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱"], "originalPrice": 634000, "discountPrice": 388000 },
           { "borderColor": "#4dabf7", "titleColor": "#1c7ed6", "title": "🐾 15kg ~ 20kg 🐾", "items": ["💧 술 전 수액 처치", "🌬️ 산소 처치", "💉 술 전 주사 마취", "😴 호흡 마취 <small>(기본 1시간)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱"], "originalPrice": 705000, "discountPrice": 438000 },
           { "borderColor": "#845ef7", "titleColor": "#845ef7", "title": "듬직한 20kg 이상", "items": ["💧 술 전 수액 처치", "🌬️ 산소 처치", "💉 술 전 주사 마취", "😴 호흡 마취 <small>(기본 1시간)</small>", "📸 전체 치과 X-ray <small>(10장 이상 꼼꼼 촬영!)</small>", "🧼 스케일링", "💎 폴리싱"], "originalPrice": 776000, "discountPrice": 488000 }
         ],
