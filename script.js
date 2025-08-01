@@ -107,8 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
         "headerTitle": "🦷✨ 우리 댕댕이 반짝반짝 스케일링 ✨🦷",
         "headerSubtitle": "💖 사랑과 정성을 담아! 🌈 체중별 합리적인 혜택가로 안내합니다! 💖",
         "packages": [
-          { "borderColor": "#ff7eb9", "title": "🐶 5kg 미만 🐶", "items": ["💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane (마무리까지)", "📸 전체 치과 X-ray (10장 이상 꼼꼼 촬영!)", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 (반짝반짝 광택 마무리!)"], "originalPrice": 512000, "discountPrice": 239000 },
-          { "borderColor": "#ffc107", "title": "🐕 5kg ~ 10kg 미만 🐕", "items": ["💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane (마무리까지)", "📸 전체 치과 X-ray (10장 이상 꼼꼼 촬영!)", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 (반짝반짝 광택 마무리!)"], "originalPrice": 603000, "discountPrice": 299000 },
           { "borderColor": "#20c997", "title": "🐕‍🦺 10kg ~ 15kg 미만 🐕‍🦺", "items": ["💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane (마무리까지)", "📸 전체 치과 X-ray (10장 이상 꼼꼼 촬영!)", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 (반짝반짝 광택 마무리!)"], "originalPrice": 704000, "discountPrice": 388000 },
           { "borderColor": "#4dabf7", "title": "🐾 15kg ~ 20kg 미만 🐾", "items": ["💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane (마무리까지)", "📸 전체 치과 X-ray (10장 이상 꼼꼼 촬영!)", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 (반짝반짝 광택 마무리!)"], "originalPrice": 795000, "discountPrice": 438000 },
           { "borderColor": "#845ef7", "title": "듬직한 20kg 이상", "items": ["💧 술 전 산소 처치", "💧 술 전 수액 처치", "💉 도입 마취(프로포폴)", "😴 호흡 마취 Isoflurane (마무리까지)", "📸 전체 치과 X-ray (10장 이상 꼼꼼 촬영!)", "🧼 스케일링", "💎 폴리싱 – Airflow 시술 (반짝반짝 광택 마무리!)"], "originalPrice": 936000, "discountPrice": 488000 }
@@ -351,8 +349,7 @@ function populateContent(data) {
     if (data.scaling) {
         document.getElementById('scaling-header-title').innerHTML = data.scaling.headerTitle;
         document.getElementById('scaling-header-subtitle').innerHTML = data.scaling.headerSubtitle;
-        const largeDogPackages = data.scaling.packages.filter(pkg => !pkg.title.includes('< 10kg') && !pkg.title.includes('5kg 미만'));
-        document.getElementById('scaling-packages').innerHTML = largeDogPackages.map(pkg => `
+        document.getElementById('scaling-packages').innerHTML = data.scaling.packages.map(pkg => `
             <div class="package-card" style="border-top-color:${pkg.borderColor}">
                 <h3 style="color:${pkg.borderColor}">${pkg.title}</h3>
                 <ul style="list-style: none; padding-left: 0;">${(pkg.items || []).map(item => `<li style="margin-bottom: 10px; font-size: 1.1em;">${item}</li>`).join('')}</ul>
