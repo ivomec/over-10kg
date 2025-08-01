@@ -440,10 +440,12 @@ function setupPageNavigation() {
             targetContent.classList.add('active');
         }
         
-        const activeTab = document.querySelector(`.nav-tab[data-target="${targetId}"]`);
-        if (activeTab) {
-            activeTab.classList.add('active');
+        // data-target 속성으로 활성화할 탭들을 모두 찾습니다.
+        const activeTabs = document.querySelectorAll(`.nav-tab[data-target="${targetId}"]`);
+        if (activeTabs) {
+            activeTabs.forEach(tab => tab.classList.add('active'));
         }
+        window.scrollTo(0, 0); // 탭 변경 시 맨 위로 스크롤
     }
 
     navTabs.forEach(tab => {
