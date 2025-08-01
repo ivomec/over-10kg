@@ -48,7 +48,7 @@
             box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
             -webkit-overflow-scrolling: touch;
             border-top: 1px solid #e9ecef;
-            position: relative; /* 힌트와 겹치지 않게 */
+            position: relative; 
         }
         /* 스크롤바 숨기기 */
         .dashboard-nav::-webkit-scrollbar { display: none; }
@@ -117,7 +117,7 @@
 
         /* --- 데스크톱 뷰 (768px 이상) --- */
         @media (min-width: 768px) {
-            /* ▼▼▼ CSS 수정 ▼▼▼ */
+            /* ▼▼▼ CSS 수정: 데스크톱 레이아웃 적용 ▼▼▼ */
             body { 
                 padding-bottom: 0; 
                 display: flex;
@@ -130,7 +130,7 @@
                 position: static;
                 order: 1; /* 내비게이션을 첫 번째로 배치 */
             }
-            /* ▲▲▲ CSS 수정 ▲▲▲ */
+            /* ▲▲▲ CSS 수정 완료 ▲▲▲ */
 
             .dashboard-nav {
                 position: static;
@@ -227,9 +227,8 @@
     </style>
 </head>
 <body>
-    <!-- ▼▼▼ HTML 구조 수정: 콘텐츠를 내비게이션 앞으로 이동 (원래대로) ▼▼▼ -->
     <div class="dashboard-content">
-        <!-- (콘텐츠 패널들은 변경 없음) -->
+        <!-- 메인 페이지 -->
         <div id="content-main" class="content-panel info-page">
             <div class="container">
                 <header>
@@ -239,24 +238,19 @@
                 <main>
                     <section class="info-section">
                         <h2>🏥 병원 안내 🏥</h2>
-                        <div class="info-grid">
-                            <!-- JS로 내용이 채워집니다. -->
-                        </div>
+                        <div class="info-grid"></div>
                     </section>
-                    <section class="pride-section" id="main-pride" style="background:#e3f2fd; padding: 25px; border-radius: 20px; margin-top: 30px;">
-                        <!-- JS로 내용이 채워집니다. -->
-                    </section>
+                    <section class="pride-section" id="main-pride" style="background:#e3f2fd; padding: 25px; border-radius: 20px; margin-top: 30px;"></section>
                     <section class="important-notice" style="margin-top: 30px;">
                         <h2 id="main-notice-title"></h2>
                         <ol id="main-notice-list"></ol>
                     </section>
                 </main>
-                <footer id="main-footer">
-                    <!-- JS로 내용이 채워집니다. -->
-                </footer>
+                <footer id="main-footer"></footer>
             </div>
         </div>
         
+        <!-- 수술 과정 -->
         <div id="content-procedure" class="content-panel info-page">
             <div class="container">
                 <header>
@@ -266,13 +260,12 @@
                 <main>
                     <a href="https://www.youtube.com/watch?v=_mk6qOF7OEs" target="_blank" class="action-button youtube-btn">🎥 영상 보러가기</a>
                     <p style="text-align:center; margin-top:-5px; margin-bottom:25px; font-weight:bold;">※ 실제 저희 병원에서 진행되는 치과 수술의 모든 과정을 영상으로 확인해보세요!</p>
-                    <div class="procedure-timeline">
-                        <!-- JS로 내용이 채워질 수 있습니다 (현재 데이터 없음) -->
-                    </div>
+                    <div class="procedure-timeline"></div>
                 </main>
             </div>
         </div>
 
+        <!-- 건강검진 (10~20kg) -->
         <div id="content-healthcheck-small" class="content-panel info-page">
             <div class="container">
                  <header>
@@ -286,11 +279,11 @@
                     <button class="option-btn" id="btn-healthcheck-without-4dx-small">❌ 사상충 검사 제외</button>
                  </div>
                  <div class="package-grid" id="healthcheck-packages-small"></div>
-                 <div class="explanation-box" style="background:#f1f8e9;border-left-color:#aed581" id="healthcheck-explanation-box-small">
-                 </div>
+                 <div class="explanation-box" style="background:#f1f8e9;border-left-color:#aed581"></div>
             </div>
         </div>
         
+        <!-- 건강검진 (20kg 이상) -->
         <div id="content-healthcheck-large" class="content-panel info-page">
             <div class="container">
                  <header>
@@ -308,11 +301,11 @@
                     <h2 style="color: #fb8c00;">덩치 큰 댕댕이들을 위한 안내 🐾</h2>
                     <div id="large-dog-explanation-content"></div>
                  </div>
-                 <div class="explanation-box" style="background:#f1f8e9;border-left-color:#aed581" id="healthcheck-explanation-box-large">
-                 </div>
+                 <div class="explanation-box" style="background:#f1f8e9;border-left-color:#aed581" id="healthcheck-explanation-box-large"></div>
             </div>
         </div>
 
+        <!-- 스케일링 -->
         <div id="content-scaling" class="content-panel info-page">
             <div class="container">
                  <header>
@@ -327,6 +320,7 @@
             </div>
         </div>
         
+        <!-- 발치 -->
         <div id="content-extraction-large" class="content-panel info-page">
             <div class="container">
                 <header>
@@ -341,7 +335,8 @@
                 </div>
             </div>
         </div>
-
+        
+        <!-- 추가 처치 -->
         <div id="content-addons-large" class="content-panel info-page">
             <div class="container">
                  <header>
@@ -356,6 +351,7 @@
             </div>
         </div>
 
+        <!-- 신경 및 보존 치료 -->
         <div id="content-nerve" class="content-panel info-page">
             <div class="container">
                 <header>
@@ -371,6 +367,7 @@
         </div>
     </div>
     
+    <!-- 내비게이션 -->
     <div class="bottom-nav-wrapper">
         <nav class="dashboard-nav">
             <a href="#" class="nav-tab" id="tab-main" data-target="content-main">💖 병원소개</a>
@@ -382,12 +379,11 @@
             <a href="#" class="nav-tab" id="tab-addons-large" data-target="content-addons-large">💊 추가처치(10kg≥)</a>
             <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경 및 보존 치료</a>
         </nav>
-        <!-- 스와이프 힌트 요소 추가 -->
+        <!-- 스와이프 힌트 요소 -->
         <div id="swipe-hint" class="swipe-hint-indicator">
             <span>›</span>
         </div>
     </div>
-    <!-- ▲▲▲ HTML 구조 수정 완료 ▲▲▲ -->
     
     <script src="script.js" defer></script>
 
