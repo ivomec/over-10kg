@@ -209,8 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('콘텐츠를 처리하는 데 실패했습니다. 코드에 문제가 없는지 확인해주세요.');
     }
     setupPageNavigation();
+    setupSwipeHint(); // 스와이프 힌트 기능 실행
 });
 
+// (populateContent, formatPrice, renderHealthCheckPackages 함수는 변경 없음)
 const formatPrice = (price) => {
     if (price === undefined || price === null) return '별도 문의';
     if (typeof price === 'number') {
@@ -440,12 +442,11 @@ function setupPageNavigation() {
             targetContent.classList.add('active');
         }
         
-        // data-target 속성으로 활성화할 탭들을 모두 찾습니다.
         const activeTabs = document.querySelectorAll(`.nav-tab[data-target="${targetId}"]`);
         if (activeTabs) {
             activeTabs.forEach(tab => tab.classList.add('active'));
         }
-        window.scrollTo(0, 0); // 탭 변경 시 맨 위로 스크롤
+        window.scrollTo(0, 0); 
     }
 
     navTabs.forEach(tab => {
@@ -456,5 +457,39 @@ function setupPageNavigation() {
         });
     });
 
-    showContent('content-main'); // 초기 페이지 설정
+    showContent('content-main');
+}
+
+
+/**
+ * 모바일 하단 탭의 스크롤(스와이프) 가능 여부를 확인하고,
+ * 필요 시 사용자에게 시각적 힌트를 보여주는 함수
+ */
+function setupSwipeHint() {
+    const nav = document.querySelector('.dashboard-nav');
+    const hint = document.getElementById('swipe-hint');
+    
+    if (!nav || !hint) return;
+
+    const checkOverflow = () => {
+        // 렌더링 후 너비 계산을 위해 약간의 지연 시간을 줌
+        setTimeout(() => {
+            const isOverflowing = nav.scrollWidth > nav.clientWidth;
+
+            if (isOverflowing) {
+                hint.classList.add('show-hint');
+                
+                // 사용자가 한 번이라도 스크롤하면 힌트를 영구적으로 제거
+                nav.addEventListener('scroll', () => {
+                    hint.classList.remove('show-hint');
+                }, { once: true }); // 이벤트가 한 번만 실행되도록 설정
+            } else {
+                hint.classList.remove('show-hint');
+            }
+        }, 100);
+    };
+
+    // 페이지 로드 시 및 창 크기 변경 시 체크
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
 }
