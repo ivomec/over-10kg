@@ -7,7 +7,7 @@
 */
 document.addEventListener('DOMContentLoaded', () => {
     const hospitalData = {
-      // (기존 hospitalData 객체는 변경 없이 그대로 유지됩니다)
+      // [v6.8] 메인 페이지 데이터
       "main": {
         "headerTitle": "💖 치과 특화 금호동물병원 💖",
         "headerSubtitle": "🦷 우리 댕댕이의 건강한 미소를 지켜주는 곳 🦷",
@@ -49,27 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         "footer": { "title": "🚀 빠른 상담 & 예약 🚀", "kakaoLink": "https://pf.kakao.com/_jiICK/chat", "telLink": "tel:062-383-7572" }
       },
-      "procedure": [
-          // ... (데이터 생략)
-      ],
-      "healthCheck": {
-        // ... (데이터 생략)
-      },
-      "healthCheckLarge": {
-       // ... (데이터 생략)
-      },
-      "scaling": {
-        // ... (데이터 생략)
-      },
-      "extraction": {
-        // ... (데이터 생략)
-      },
-      "addons": {
-        // ... (데이터 생략)
-      },
-      "nerve": {
-        // ... (데이터 생략)
-      }
+      // (이하 다른 탭의 데이터는 생략됨)
+      "procedure": [],
+      "healthCheck": {},
+      "healthCheckLarge": {},
+      "scaling": {},
+      "extraction": {},
+      "addons": {},
+      "nerve": {}
     };
 
     try {
@@ -82,19 +69,97 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSwipeHint(); // 스와이프 힌트 기능 실행
 });
 
-// (populateContent, formatPrice, renderHealthCheckPackages 함수는 변경 없음)
+/**
+ * [수정] 숫자를 원화 형식의 문자열로 변환하는 함수
+ * @param {number} price - 가격 숫자
+ * @returns {string} - 포맷팅된 문자열 (예: "10,000원")
+ */
 const formatPrice = (price) => {
-    // ... (함수 내용 생략)
+    return `${price.toLocaleString()}원`;
 };
 
+
+/**
+ * [수정] 제공된 데이터를 기반으로 페이지의 동적 콘텐츠를 채우는 함수
+ * @param {object} data - hospitalData 객체
+ */
 function populateContent(data) {
-    // ... (함수 내용 생략)
+    // --- 1. 메인 페이지 (병원소개) 데이터 채우기 ---
+    if (data.main) {
+        const main = data.main;
+        document.getElementById('main-header-title').textContent = main.headerTitle;
+        document.getElementById('main-header-subtitle').textContent = main.headerSubtitle;
+
+        // 병원 안내 (진료시간, 주차)
+        const infoGrid = document.querySelector('#content-main .info-grid');
+        infoGrid.innerHTML = `
+            <div class="info-card" style="border-top-color: #4dabf7;">
+                <h3>${main.hours.title}</h3>
+                <ul>
+                    ${main.hours.times.map(item => `<li class="price-item" style="${item.highlight ? 'color:#c92a2a;font-weight:bold;' : ''}">${item.day}: ${item.time}</li>`).join('')}
+                </ul>
+                <p style="font-size: 0.9em; text-align: center; margin-top: 15px; color: #555;">${main.hours.surgeryNotice}</p>
+            </div>
+            <div class="info-card" style="border-top-color: #69db7c;">
+                <h3>${main.parking.title}</h3>
+                <ul>
+                    ${main.parking.content.map(item => `<li class="price-item" style="${item.highlight ? 'color:#1971c2;font-weight:bold;' : ''}">${item.label}: ${item.desc}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+        
+        // 병원 자랑
+        const prideSection = document.getElementById('main-pride');
+        prideSection.innerHTML = `<h2>${main.pride.title}</h2>` + main.pride.points.map(point => `
+            <div class="explanation-box" style="background:#fff; border-left-color:#84fab0; margin-bottom:15px;">
+                <h3 style="color:#00796b;">${point.title}</h3>
+                <ul class="sub-list" style="list-style-type: '✔️ ';">${point.items.map(item => `<li>${item}</li>`).join('')}</ul>
+            </div>
+        `).join('');
+
+        // 주의사항
+        document.getElementById('main-notice-title').textContent = main.notice.title;
+        const noticeList = document.getElementById('main-notice-list');
+        noticeList.innerHTML = main.notice.items.map(item => {
+            if (item.type === 'sublist') {
+                return `<li>${item.main}<ul class="sub-list">${item.sublist.map(sub => `<li>${sub}</li>`).join('')}</ul></li>`;
+            }
+            return `<li>${item.content}</li>`;
+        }).join('');
+
+        // 하단 버튼
+        const footer = document.getElementById('main-footer');
+        footer.innerHTML = `
+            <h2>${main.footer.title}</h2>
+            <a href="${main.footer.kakaoLink}" target="_blank" class="action-button kakao-btn">카카오톡으로 문의하기</a>
+            <a href="${main.footer.telLink}" class="action-button tel-btn">전화로 문의하기 (${main.contact.phone})</a>
+        `;
+    }
+
+    // --- (이하 다른 탭 데이터 채우는 로직 추가 가능) ---
+    // 예: if(data.procedure) { ... }
+    // 현재는 데이터가 없으므로 이 부분은 비워둡니다.
 }
 
+
+/**
+ * [수정] 건강검진 패키지 렌더링 함수 (현재는 호출되지 않음)
+ * 데이터가 제공되면 이 함수를 완성하여 사용할 수 있습니다.
+ */
 function renderHealthCheckPackages(size, packages) {
-    // ... (함수 내용 생략)
+    const containerId = `healthcheck-packages-${size}`;
+    const container = document.getElementById(containerId);
+    if(!container) return;
+
+    // 패키지 데이터를 기반으로 HTML을 생성하는 로직
+    // 예: container.innerHTML = packages.map(pkg => `...`).join('');
+    console.log(`Rendering health check for ${size}`);
 }
 
+
+/**
+ * [기존과 동일] 탭 클릭 시 해당 콘텐츠 패널을 보여주는 함수
+ */
 function setupPageNavigation() {
     const navTabs = document.querySelectorAll('.nav-tab');
     const contentPanels = document.querySelectorAll('.content-panel');
@@ -123,13 +188,13 @@ function setupPageNavigation() {
         });
     });
 
+    // 초기 화면으로 '병원소개'를 보여줌
     showContent('content-main');
 }
 
 
 /**
- * 모바일 하단 탭의 스크롤(스와이프) 가능 여부를 확인하고,
- * 필요 시 사용자에게 시각적 힌트를 보여주는 함수
+ * [기존과 동일] 모바일 하단 탭의 스크롤 가능 여부를 확인하고 힌트를 표시하는 함수
  */
 function setupSwipeHint() {
     const nav = document.querySelector('.dashboard-nav');
@@ -140,6 +205,7 @@ function setupSwipeHint() {
     const checkOverflow = () => {
         // 렌더링 후 너비 계산을 위해 약간의 지연 시간을 줌
         setTimeout(() => {
+            // scrollWidth (콘텐츠의 전체 너비)가 clientWidth(보이는 영역의 너비)보다 크면 스크롤 가능
             const isOverflowing = nav.scrollWidth > nav.clientWidth;
 
             if (isOverflowing) {
@@ -152,7 +218,7 @@ function setupSwipeHint() {
             } else {
                 hint.classList.remove('show-hint');
             }
-        }, 100);
+        }, 100); // 100ms 지연
     };
 
     // 페이지 로드 시 및 창 크기 변경 시 체크
