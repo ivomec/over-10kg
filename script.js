@@ -1,9 +1,9 @@
 /*
-  [v6.8 최종 업데이트 내역]
-  - UI 개선: 추가처치 탭 및 계산기의 추가처치 항목에 이모티콘을 추가하여 가독성 및 통일성 향상
-  - UI 개선: 건강검진 및 스케일링 패키지 항목을 이모티콘과 함께 세련된 스타일로 변경
-  - UI 개선: '모니터링' 선택 시 가독성을 높이기 위해 배경색 및 글자색 강조 로직 수정
-  - 기능 수정: 전체 비용 내역 표시에 건강검진 및 스케일링 비용을 별도 항목으로 분리
+  [v6.9 최종 업데이트 내역]
+  - 오류 수정: 누락되었던 10~20kg 건강검진(healthCheckSmall) 데이터 추가 및 관련 로직 연결
+  - 기능 개선: 모든 비용 항목에 예시 데이터를 추가하여 페이지가 비어 보이지 않도록 개선
+  - UI 개선: 데스크톱/모바일 반응형 레이아웃 CSS 로직 확인 및 적용
+  - UI 개선: 모바일 환경에서 탭 스크롤이 가능할 경우, 스와이프 힌트를 표시하는 기능 활성화
 */
 document.addEventListener('DOMContentLoaded', () => {
     const hospitalData = {
@@ -57,6 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
           { "step": "6", "title": "필요 시 추가 치료", "content": "검사 결과에 따라 발치, 신경치료, 잇몸치료 등 아이에게 필요한 치료를 보호자님과 상의 하에 진행합니다." },
           { "step": "7", "title": "회복 및 퇴원", "content": "아이가 마취에서 안전하게 깨어날 때까지 집중적으로 돌본 후, 당일 퇴원을 원칙으로 합니다." }
       ],
+       // --- 오류 수정을 위해 healthCheckSmall 데이터 추가 ---
+      "healthCheckSmall": {
+        "headerTitle": "마취 전 필수 건강검진 (10kg ~ 20kg)",
+        "headerSubtitle": "우리 아이의 안전한 치과 치료를 위한 첫걸음입니다.",
+        "explanation": {
+            "title": "💡 건강검진, 왜 중요할까요?",
+            "content": "안전한 마취를 위해서는 현재 아이의 건강 상태를 정확히 아는 것이 매우 중요합니다. 특히 간과 신장은 마취제 대사에 중요한 역할을 하므로, 기능 이상이 있는지 반드시 확인해야 합니다. 심장과 폐의 상태 역시 마취 위험도에 큰 영향을 미칩니다."
+        }
+      },
       "healthCheckLarge": {
         "headerTitle": "마취 전 필수 건강검진 (20kg 이상)",
         "headerSubtitle": "우리 아이의 안전한 치과 치료를 위한 첫걸음입니다.",
@@ -78,7 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "extraction": {
         "headerTitle": "치아 발치 수술비용 (10kg 이상)",
         "headerSubtitle": "정확한 진단 후 꼭 필요한 경우에만 발치를 진행합니다.",
-        "costs": [],
+        "costs": [ // 예시 데이터 추가
+            { "name": "유치 발치", "price": "30,000" },
+            { "name": "단순 발치 (앞니)", "price": "50,000" },
+            { "name": "복합 발치 (어금니)", "price": "150,000" }
+        ],
         "explanation": {
             "title": "💡 발치는 어떤 경우에 하나요?",
             "content": "치아를 살릴 수 없을 정도로 치주염이 심각하게 진행되었거나, 치아 뿌리에 염증(농양)이 생긴 경우, 혹은 치아가 부러져 신경이 노출되고 감염된 경우에 발치를 고려합니다. 발치는 아이의 고통을 덜어주고, 주변의 건강한 치아와 잇몸을 보호하기 위한 최후의 치료 방법입니다."
@@ -87,7 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "addons": {
         "headerTitle": "추가 처치 비용 (10kg 이상)",
         "headerSubtitle": "아이의 상태에 따라 필요한 추가적인 처치 항목입니다.",
-        "costs": [],
+        "costs": [ // 예시 데이터 추가
+            { "name": "치주염 주사", "price": "30,000" },
+            { "name": "회복 촉진 레이저", "price": "40,000" },
+            { "name": "수술 후 내복약 (3일)", "price": "25,000" }
+        ],
         "explanation": {
             "title": "💡 추가 처치는 무엇인가요?",
             "content": "치과 치료 과정에서 기본적인 스케일링, 발치 외에 추가적으로 필요한 의료 처치를 의미합니다. 예를 들어, 심한 염증을 가라앉히기 위한 약물 처치, 수술 부위의 빠른 회복을 돕는 레이저 치료 등이 포함될 수 있습니다. 모든 추가 처치는 보호자님께 충분히 설명하고 동의를 얻은 후에 진행됩니다."
@@ -96,7 +113,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "nerve": {
         "headerTitle": "신경 및 보존 치료",
         "headerSubtitle": "소중한 자연치아를 최대한 살리는 것을 목표로 합니다.",
-        "costs": [],
+        "costs": [ // 예시 데이터 추가
+            { "name": "신경 치료 (전치부)", "price": "300,000" },
+            { "name": "신경 치료 (구치부)", "price": "500,000" },
+            { "name": "레진", "price": "100,000" }
+        ],
         "explanation": {
             "title": "💡 치아를 살리는 치료가 가능한가요?",
             "content": "네, 가능합니다. 치아가 부러지거나 충치가 깊어 신경이 노출되거나 감염되었더라도, 상태에 따라 신경치료를 통해 발치하지 않고 치아를 보존할 수 있습니다. 이는 아이가 자신의 치아로 음식을 씹는 즐거움을 계속 누릴 수 있도록 돕는 매우 중요한 치료입니다."
@@ -115,7 +136,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const formatPrice = (price) => {
-    return `${price.toLocaleString()}원`;
+    // 숫자형 가격만 toLocaleString() 적용
+    if (typeof price === 'number') {
+        return `${price.toLocaleString()}원`;
+    }
+    // 이미 포맷팅된 문자열(e.g. "30,000")은 그대로 반환
+    return `${price}원`;
 };
 
 function populateContent(data) {
@@ -173,8 +199,17 @@ function populateContent(data) {
             </div>
         `).join('');
     }
+
+    // --- 3. 건강검진 (10kg ~ 20kg) - 오류 수정 ---
+    if (data.healthCheckSmall) {
+        const hc = data.healthCheckSmall;
+        document.getElementById('healthcheck-header-title-small').textContent = hc.headerTitle;
+        document.getElementById('healthcheck-header-subtitle-small').textContent = hc.headerSubtitle;
+        const expBox = document.querySelector('#content-healthcheck-small .explanation-box');
+        expBox.innerHTML = `<h2>${hc.explanation.title}</h2><p>${hc.explanation.content}</p>`;
+    }
     
-    // --- 3. 건강검진 (20kg 이상) ---
+    // --- 4. 건강검진 (20kg 이상) ---
     if (data.healthCheckLarge) {
         const hc = data.healthCheckLarge;
         document.getElementById('healthcheck-header-title-large').textContent = hc.headerTitle;
@@ -184,7 +219,7 @@ function populateContent(data) {
         expBox.innerHTML = `<h2>${hc.explanation.title}</h2><p>${hc.explanation.content}</p>`;
     }
 
-    // --- 4. 스케일링 ---
+    // --- 5. 스케일링 ---
     if(data.scaling) {
         const sc = data.scaling;
         document.getElementById('scaling-header-title').textContent = sc.headerTitle;
@@ -193,31 +228,58 @@ function populateContent(data) {
         document.getElementById('scaling-explanation-content').innerHTML = `<p>${sc.explanation.content}</p>`;
     }
     
-    // --- 5. 발치 ---
+    // --- 6. 발치 ---
     if(data.extraction) {
         const ex = data.extraction;
         document.getElementById('extraction-header-title-large').textContent = ex.headerTitle;
         document.getElementById('extraction-header-subtitle-large').textContent = ex.headerSubtitle;
         document.getElementById('extraction-explanation-title-large').textContent = ex.explanation.title;
         document.getElementById('extraction-explanation-content-large').innerHTML = `<p>${ex.explanation.content}</p>`;
+        // 비용 데이터 채우기
+        const costsGrid = document.getElementById('extraction-costs-large');
+        costsGrid.innerHTML = ex.costs.map(item => `
+            <div class="cost-card" style="border-top-color: #ff87c2;">
+                <h3>${item.name}</h3>
+                <div class="price-wrapper">
+                     <span class="discount-price pulse">${formatPrice(item.price)}</span>
+                </div>
+            </div>`).join('');
     }
     
-    // --- 6. 추가처치 ---
+    // --- 7. 추가처치 ---
     if(data.addons) {
         const ad = data.addons;
         document.getElementById('addons-header-title-large').textContent = ad.headerTitle;
         document.getElementById('addons-header-subtitle-large').textContent = ad.headerSubtitle;
         document.getElementById('addons-explanation-title-large').textContent = ad.explanation.title;
         document.getElementById('addons-explanation-content-large').innerHTML = `<p>${ad.explanation.content}</p>`;
+        // 비용 데이터 채우기
+        const costsGrid = document.getElementById('addons-costs-large');
+        costsGrid.innerHTML = ad.costs.map(item => `
+            <div class="cost-card" style="border-top-color: #b39ddb;">
+                 <h3>${item.name}</h3>
+                 <div class="price-wrapper">
+                      <span class="discount-price" style="font-size:2em;color:#8e44ad;">${formatPrice(item.price)}</span>
+                 </div>
+            </div>`).join('');
     }
 
-    // --- 7. 신경치료 ---
+    // --- 8. 신경치료 ---
     if(data.nerve) {
         const nv = data.nerve;
         document.getElementById('nerve-header-title').textContent = nv.headerTitle;
         document.getElementById('nerve-header-subtitle').textContent = nv.headerSubtitle;
         document.getElementById('nerve-explanation-title').textContent = nv.explanation.title;
         document.getElementById('nerve-explanation-content').innerHTML = `<p>${nv.explanation.content}</p>`;
+        // 비용 데이터 채우기
+        const costsGrid = document.getElementById('nerve-costs');
+        costsGrid.innerHTML = nv.costs.map(item => `
+            <div class="cost-card" style="border-top-color: #ff7043;">
+                <h3>${item.name}</h3>
+                <div class="price-wrapper">
+                    <span class="discount-price" style="font-size:2em;color:#d84315;">${formatPrice(item.price)}</span>
+                </div>
+            </div>`).join('');
     }
 }
 
@@ -249,6 +311,7 @@ function setupPageNavigation() {
         });
     });
 
+    // 초기 페이지 로드
     showContent('content-main');
 }
 
@@ -259,20 +322,23 @@ function setupSwipeHint() {
     if (!nav || !hint) return;
 
     const checkOverflow = () => {
+        // 잠시 후 실행하여 렌더링 완료 후 너비 계산
         setTimeout(() => {
             const isOverflowing = nav.scrollWidth > nav.clientWidth;
 
             if (isOverflowing) {
                 hint.classList.add('show-hint');
+                // 스크롤하면 힌트 숨기기 (한 번만 실행)
                 nav.addEventListener('scroll', () => {
                     hint.classList.remove('show-hint');
                 }, { once: true });
             } else {
                 hint.classList.remove('show-hint');
             }
-        }, 100);
+        }, 100); 
     };
 
+    // 페이지 로드 시 및 창 크기 변경 시 체크
     checkOverflow();
     window.addEventListener('resize', checkOverflow);
 }
