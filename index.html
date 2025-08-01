@@ -117,9 +117,20 @@
 
         /* --- 데스크톱 뷰 (768px 이상) --- */
         @media (min-width: 768px) {
-            body { padding-bottom: 0; }
-
-            .bottom-nav-wrapper { position: static; }
+            /* ▼▼▼ CSS 수정 ▼▼▼ */
+            body { 
+                padding-bottom: 0; 
+                display: flex;
+                flex-direction: column;
+            }
+            .dashboard-content {
+                order: 2; /* 콘텐츠를 두 번째로 배치 */
+            }
+            .bottom-nav-wrapper { 
+                position: static;
+                order: 1; /* 내비게이션을 첫 번째로 배치 */
+            }
+            /* ▲▲▲ CSS 수정 ▲▲▲ */
 
             .dashboard-nav {
                 position: static;
@@ -216,26 +227,7 @@
     </style>
 </head>
 <body>
-
-    <!-- ▼▼▼ HTML 구조 변경: 내비게이션을 콘텐츠 앞으로 이동 ▼▼▼ -->
-    <div class="bottom-nav-wrapper">
-        <nav class="dashboard-nav">
-            <a href="#" class="nav-tab" id="tab-main" data-target="content-main">💖 병원소개</a>
-            <a href="#" class="nav-tab" id="tab-procedure" data-target="content-procedure">🏥 수술 과정</a>
-            <a href="#" class="nav-tab" id="tab-healthcheck-small" data-target="content-healthcheck-small">🩺 건강검진(10~20kg)</a>
-            <a href="#" class="nav-tab" id="tab-healthcheck-large" data-target="content-healthcheck-large">🩺 건강검진(20kg≥)</a>
-            <a href="#" class="nav-tab" id="tab-scaling" data-target="content-scaling">🦷 스케일링</a>
-            <a href="#" class="nav-tab" id="tab-extraction-large" data-target="content-extraction-large">😿 수술비용(10kg≥)</a>
-            <a href="#" class="nav-tab" id="tab-addons-large" data-target="content-addons-large">💊 추가처치(10kg≥)</a>
-            <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경 및 보존 치료</a>
-        </nav>
-        <!-- 스와이프 힌트 요소 -->
-        <div id="swipe-hint" class="swipe-hint-indicator">
-            <span>›</span>
-        </div>
-    </div>
-    <!-- ▲▲▲ HTML 구조 변경 완료 ▲▲▲ -->
-
+    <!-- ▼▼▼ HTML 구조 수정: 콘텐츠를 내비게이션 앞으로 이동 (원래대로) ▼▼▼ -->
     <div class="dashboard-content">
         <!-- (콘텐츠 패널들은 변경 없음) -->
         <div id="content-main" class="content-panel info-page">
@@ -371,8 +363,25 @@
                 </div>
             </div>
         </div>
-        
     </div>
+    
+    <div class="bottom-nav-wrapper">
+        <nav class="dashboard-nav">
+            <a href="#" class="nav-tab" id="tab-main" data-target="content-main">💖 병원소개</a>
+            <a href="#" class="nav-tab" id="tab-procedure" data-target="content-procedure">🏥 수술 과정</a>
+            <a href="#" class="nav-tab" id="tab-healthcheck-small" data-target="content-healthcheck-small">🩺 건강검진(10~20kg)</a>
+            <a href="#" class="nav-tab" id="tab-healthcheck-large" data-target="content-healthcheck-large">🩺 건강검진(20kg≥)</a>
+            <a href="#" class="nav-tab" id="tab-scaling" data-target="content-scaling">🦷 스케일링</a>
+            <a href="#" class="nav-tab" id="tab-extraction-large" data-target="content-extraction-large">😿 수술비용(10kg≥)</a>
+            <a href="#" class="nav-tab" id="tab-addons-large" data-target="content-addons-large">💊 추가처치(10kg≥)</a>
+            <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경 및 보존 치료</a>
+        </nav>
+        <!-- 스와이프 힌트 요소 추가 -->
+        <div id="swipe-hint" class="swipe-hint-indicator">
+            <span>›</span>
+        </div>
+    </div>
+    <!-- ▲▲▲ HTML 구조 수정 완료 ▲▲▲ -->
     
     <script src="script.js" defer></script>
 
