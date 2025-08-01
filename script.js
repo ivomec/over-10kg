@@ -7,7 +7,6 @@
 */
 document.addEventListener('DOMContentLoaded', () => {
     const hospitalData = {
-      // [v6.8] 메인 페이지 데이터
       "main": {
         "headerTitle": "💖 치과 특화 금호동물병원 💖",
         "headerSubtitle": "🦷 우리 댕댕이의 건강한 미소를 지켜주는 곳 🦷",
@@ -49,14 +48,60 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         "footer": { "title": "🚀 빠른 상담 & 예약 🚀", "kakaoLink": "https://pf.kakao.com/_jiICK/chat", "telLink": "tel:062-383-7572" }
       },
-      // (이하 다른 탭의 데이터는 생략됨)
-      "procedure": [],
-      "healthCheck": {},
-      "healthCheckLarge": {},
-      "scaling": {},
-      "extraction": {},
-      "addons": {},
-      "nerve": {}
+      "procedure": [
+          { "step": "1", "title": "마취 전 검사", "content": "안전한 마취를 위해 혈액검사, 흉부 엑스레이 등 필수적인 건강검진을 진행합니다." },
+          { "step": "2", "title": "안전한 호흡 마취", "content": "최신 호흡마취기와 환자 감시장치를 이용하여 아이의 상태를 실시간으로 확인하며 안전하게 마취를 유지합니다." },
+          { "step": "3", "title": "치과 방사선 촬영", "content": "눈에 보이지 않는 치아 뿌리와 잇몸뼈의 상태를 확인하기 위해 치과 전용 디지털 엑스레이를 촬영합니다." },
+          { "step": "4", "title": "정밀 구강 검사 (Probing)", "content": "치과 탐침(Probe)을 사용하여 각 치아의 치주 포켓 깊이를 측정하고, 숨겨진 질환을 꼼꼼하게 찾아냅니다." },
+          { "step": "5", "title": "스케일링 & 폴리싱", "content": "초음파 스케일러로 치석을 제거하고, 폴리싱으로 치아 표면을 매끄럽게 다듬어 치석이 다시 끼는 것을 방지합니다." },
+          { "step": "6", "title": "필요 시 추가 치료", "content": "검사 결과에 따라 발치, 신경치료, 잇몸치료 등 아이에게 필요한 치료를 보호자님과 상의 하에 진행합니다." },
+          { "step": "7", "title": "회복 및 퇴원", "content": "아이가 마취에서 안전하게 깨어날 때까지 집중적으로 돌본 후, 당일 퇴원을 원칙으로 합니다." }
+      ],
+      "healthCheckLarge": {
+        "headerTitle": "마취 전 필수 건강검진 (20kg 이상)",
+        "headerSubtitle": "우리 아이의 안전한 치과 치료를 위한 첫걸음입니다.",
+        "explanation": {
+            "title": "💡 건강검진, 왜 중요할까요?",
+            "content": "안전한 마취를 위해서는 현재 아이의 건강 상태를 정확히 아는 것이 매우 중요합니다. 특히 간과 신장은 마취제 대사에 중요한 역할을 하므로, 기능 이상이 있는지 반드시 확인해야 합니다. 심장과 폐의 상태 역시 마취 위험도에 큰 영향을 미칩니다."
+        },
+        "largeDogContent": "몸집이 큰 아이들은 체중에 비례하여 더 많은 마취제가 필요하며, 기저질환의 가능성도 고려해야 합니다. 따라서, 더욱 세심하고 종합적인 검사를 통해 마취의 안전성을 확보하는 것이 중요합니다."
+      },
+      "scaling": {
+        "headerTitle": "스케일링 비용 안내",
+        "headerSubtitle": "치석 제거만으로도 아이의 구강 건강을 지킬 수 있습니다.",
+        "packages": [],
+        "explanation": {
+            "title": "💡 스케일링, 꼭 해야 할까요?",
+            "content": "치석은 단순한 치아의 때가 아니라, 수많은 세균 덩어리입니다. 방치할 경우 잇몸 염증을 일으키고, 심하면 치아를 지지하는 뼈를 녹여 발치로 이어질 수 있습니다. 또한, 치석 세균이 혈관을 타고 전신으로 퍼져 심장, 신장 등에 심각한 질병을 유발할 수도 있습니다. 정기적인 스케일링은 이러한 위험을 예방하는 가장 효과적인 방법입니다."
+        }
+      },
+      "extraction": {
+        "headerTitle": "치아 발치 수술비용 (10kg 이상)",
+        "headerSubtitle": "정확한 진단 후 꼭 필요한 경우에만 발치를 진행합니다.",
+        "costs": [],
+        "explanation": {
+            "title": "💡 발치는 어떤 경우에 하나요?",
+            "content": "치아를 살릴 수 없을 정도로 치주염이 심각하게 진행되었거나, 치아 뿌리에 염증(농양)이 생긴 경우, 혹은 치아가 부러져 신경이 노출되고 감염된 경우에 발치를 고려합니다. 발치는 아이의 고통을 덜어주고, 주변의 건강한 치아와 잇몸을 보호하기 위한 최후의 치료 방법입니다."
+        }
+      },
+      "addons": {
+        "headerTitle": "추가 처치 비용 (10kg 이상)",
+        "headerSubtitle": "아이의 상태에 따라 필요한 추가적인 처치 항목입니다.",
+        "costs": [],
+        "explanation": {
+            "title": "💡 추가 처치는 무엇인가요?",
+            "content": "치과 치료 과정에서 기본적인 스케일링, 발치 외에 추가적으로 필요한 의료 처치를 의미합니다. 예를 들어, 심한 염증을 가라앉히기 위한 약물 처치, 수술 부위의 빠른 회복을 돕는 레이저 치료 등이 포함될 수 있습니다. 모든 추가 처치는 보호자님께 충분히 설명하고 동의를 얻은 후에 진행됩니다."
+        }
+      },
+      "nerve": {
+        "headerTitle": "신경 및 보존 치료",
+        "headerSubtitle": "소중한 자연치아를 최대한 살리는 것을 목표로 합니다.",
+        "costs": [],
+        "explanation": {
+            "title": "💡 치아를 살리는 치료가 가능한가요?",
+            "content": "네, 가능합니다. 치아가 부러지거나 충치가 깊어 신경이 노출되거나 감염되었더라도, 상태에 따라 신경치료를 통해 발치하지 않고 치아를 보존할 수 있습니다. 이는 아이가 자신의 치아로 음식을 씹는 즐거움을 계속 누릴 수 있도록 돕는 매우 중요한 치료입니다."
+        }
+      }
     };
 
     try {
@@ -66,59 +111,42 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('콘텐츠를 처리하는 데 실패했습니다. 코드에 문제가 없는지 확인해주세요.');
     }
     setupPageNavigation();
-    setupSwipeHint(); // 스와이프 힌트 기능 실행
+    setupSwipeHint();
 });
 
-/**
- * [수정] 숫자를 원화 형식의 문자열로 변환하는 함수
- * @param {number} price - 가격 숫자
- * @returns {string} - 포맷팅된 문자열 (예: "10,000원")
- */
 const formatPrice = (price) => {
     return `${price.toLocaleString()}원`;
 };
 
-
-/**
- * [수정] 제공된 데이터를 기반으로 페이지의 동적 콘텐츠를 채우는 함수
- * @param {object} data - hospitalData 객체
- */
 function populateContent(data) {
-    // --- 1. 메인 페이지 (병원소개) 데이터 채우기 ---
+    // --- 1. 메인 페이지 ---
     if (data.main) {
         const main = data.main;
-        document.getElementById('main-header-title').textContent = main.headerTitle;
-        document.getElementById('main-header-subtitle').textContent = main.headerSubtitle;
+        document.getElementById('main-header-title').innerHTML = main.headerTitle;
+        document.getElementById('main-header-subtitle').innerHTML = main.headerSubtitle;
 
-        // 병원 안내 (진료시간, 주차)
         const infoGrid = document.querySelector('#content-main .info-grid');
         infoGrid.innerHTML = `
             <div class="info-card" style="border-top-color: #4dabf7;">
                 <h3>${main.hours.title}</h3>
-                <ul>
-                    ${main.hours.times.map(item => `<li class="price-item" style="${item.highlight ? 'color:#c92a2a;font-weight:bold;' : ''}">${item.day}: ${item.time}</li>`).join('')}
-                </ul>
+                <ul>${main.hours.times.map(item => `<li class="price-item" style="${item.highlight ? 'color:#c92a2a;font-weight:bold;' : ''}"><span class="price-label">${item.day}</span> <span class="price-value">${item.time}</span></li>`).join('')}</ul>
                 <p style="font-size: 0.9em; text-align: center; margin-top: 15px; color: #555;">${main.hours.surgeryNotice}</p>
             </div>
             <div class="info-card" style="border-top-color: #69db7c;">
                 <h3>${main.parking.title}</h3>
-                <ul>
-                    ${main.parking.content.map(item => `<li class="price-item" style="${item.highlight ? 'color:#1971c2;font-weight:bold;' : ''}">${item.label}: ${item.desc}</li>`).join('')}
-                </ul>
+                <ul>${main.parking.content.map(item => `<li class="price-item" style="${item.highlight ? 'color:#1971c2;font-weight:bold;' : ''}"><span class="price-label">${item.label}</span> <span class="price-value">${item.desc}</span></li>`).join('')}</ul>
             </div>
         `;
         
-        // 병원 자랑
         const prideSection = document.getElementById('main-pride');
         prideSection.innerHTML = `<h2>${main.pride.title}</h2>` + main.pride.points.map(point => `
             <div class="explanation-box" style="background:#fff; border-left-color:#84fab0; margin-bottom:15px;">
-                <h3 style="color:#00796b;">${point.title}</h3>
+                <h3 style="color:#00796b; font-size: 1.3em;">${point.title}</h3>
                 <ul class="sub-list" style="list-style-type: '✔️ ';">${point.items.map(item => `<li>${item}</li>`).join('')}</ul>
             </div>
         `).join('');
 
-        // 주의사항
-        document.getElementById('main-notice-title').textContent = main.notice.title;
+        document.getElementById('main-notice-title').innerHTML = main.notice.title;
         const noticeList = document.getElementById('main-notice-list');
         noticeList.innerHTML = main.notice.items.map(item => {
             if (item.type === 'sublist') {
@@ -127,7 +155,6 @@ function populateContent(data) {
             return `<li>${item.content}</li>`;
         }).join('');
 
-        // 하단 버튼
         const footer = document.getElementById('main-footer');
         footer.innerHTML = `
             <h2>${main.footer.title}</h2>
@@ -135,31 +162,65 @@ function populateContent(data) {
             <a href="${main.footer.telLink}" class="action-button tel-btn">전화로 문의하기 (${main.contact.phone})</a>
         `;
     }
+    
+    // --- 2. 수술 과정 ---
+    if (data.procedure) {
+        const timeline = document.querySelector('#content-procedure .procedure-timeline');
+        timeline.innerHTML = data.procedure.map(item => `
+            <div class="timeline-item" data-step="${item.step}">
+                <h3>${item.title}</h3>
+                <div class="timeline-content">${item.content}</div>
+            </div>
+        `).join('');
+    }
+    
+    // --- 3. 건강검진 (20kg 이상) ---
+    if (data.healthCheckLarge) {
+        const hc = data.healthCheckLarge;
+        document.getElementById('healthcheck-header-title-large').textContent = hc.headerTitle;
+        document.getElementById('healthcheck-header-subtitle-large').textContent = hc.headerSubtitle;
+        document.getElementById('large-dog-explanation-content').innerHTML = `<p>${hc.largeDogContent}</p>`;
+        const expBox = document.getElementById('healthcheck-explanation-box-large');
+        expBox.innerHTML = `<h2>${hc.explanation.title}</h2><p>${hc.explanation.content}</p>`;
+    }
 
-    // --- (이하 다른 탭 데이터 채우는 로직 추가 가능) ---
-    // 예: if(data.procedure) { ... }
-    // 현재는 데이터가 없으므로 이 부분은 비워둡니다.
+    // --- 4. 스케일링 ---
+    if(data.scaling) {
+        const sc = data.scaling;
+        document.getElementById('scaling-header-title').textContent = sc.headerTitle;
+        document.getElementById('scaling-header-subtitle').textContent = sc.headerSubtitle;
+        document.getElementById('scaling-explanation-title').textContent = sc.explanation.title;
+        document.getElementById('scaling-explanation-content').innerHTML = `<p>${sc.explanation.content}</p>`;
+    }
+    
+    // --- 5. 발치 ---
+    if(data.extraction) {
+        const ex = data.extraction;
+        document.getElementById('extraction-header-title-large').textContent = ex.headerTitle;
+        document.getElementById('extraction-header-subtitle-large').textContent = ex.headerSubtitle;
+        document.getElementById('extraction-explanation-title-large').textContent = ex.explanation.title;
+        document.getElementById('extraction-explanation-content-large').innerHTML = `<p>${ex.explanation.content}</p>`;
+    }
+    
+    // --- 6. 추가처치 ---
+    if(data.addons) {
+        const ad = data.addons;
+        document.getElementById('addons-header-title-large').textContent = ad.headerTitle;
+        document.getElementById('addons-header-subtitle-large').textContent = ad.headerSubtitle;
+        document.getElementById('addons-explanation-title-large').textContent = ad.explanation.title;
+        document.getElementById('addons-explanation-content-large').innerHTML = `<p>${ad.explanation.content}</p>`;
+    }
+
+    // --- 7. 신경치료 ---
+    if(data.nerve) {
+        const nv = data.nerve;
+        document.getElementById('nerve-header-title').textContent = nv.headerTitle;
+        document.getElementById('nerve-header-subtitle').textContent = nv.headerSubtitle;
+        document.getElementById('nerve-explanation-title').textContent = nv.explanation.title;
+        document.getElementById('nerve-explanation-content').innerHTML = `<p>${nv.explanation.content}</p>`;
+    }
 }
 
-
-/**
- * [수정] 건강검진 패키지 렌더링 함수 (현재는 호출되지 않음)
- * 데이터가 제공되면 이 함수를 완성하여 사용할 수 있습니다.
- */
-function renderHealthCheckPackages(size, packages) {
-    const containerId = `healthcheck-packages-${size}`;
-    const container = document.getElementById(containerId);
-    if(!container) return;
-
-    // 패키지 데이터를 기반으로 HTML을 생성하는 로직
-    // 예: container.innerHTML = packages.map(pkg => `...`).join('');
-    console.log(`Rendering health check for ${size}`);
-}
-
-
-/**
- * [기존과 동일] 탭 클릭 시 해당 콘텐츠 패널을 보여주는 함수
- */
 function setupPageNavigation() {
     const navTabs = document.querySelectorAll('.nav-tab');
     const contentPanels = document.querySelectorAll('.content-panel');
@@ -188,14 +249,9 @@ function setupPageNavigation() {
         });
     });
 
-    // 초기 화면으로 '병원소개'를 보여줌
     showContent('content-main');
 }
 
-
-/**
- * [기존과 동일] 모바일 하단 탭의 스크롤 가능 여부를 확인하고 힌트를 표시하는 함수
- */
 function setupSwipeHint() {
     const nav = document.querySelector('.dashboard-nav');
     const hint = document.getElementById('swipe-hint');
@@ -203,25 +259,20 @@ function setupSwipeHint() {
     if (!nav || !hint) return;
 
     const checkOverflow = () => {
-        // 렌더링 후 너비 계산을 위해 약간의 지연 시간을 줌
         setTimeout(() => {
-            // scrollWidth (콘텐츠의 전체 너비)가 clientWidth(보이는 영역의 너비)보다 크면 스크롤 가능
             const isOverflowing = nav.scrollWidth > nav.clientWidth;
 
             if (isOverflowing) {
                 hint.classList.add('show-hint');
-                
-                // 사용자가 한 번이라도 스크롤하면 힌트를 영구적으로 제거
                 nav.addEventListener('scroll', () => {
                     hint.classList.remove('show-hint');
-                }, { once: true }); // 이벤트가 한 번만 실행되도록 설정
+                }, { once: true });
             } else {
                 hint.classList.remove('show-hint');
             }
-        }, 100); // 100ms 지연
+        }, 100);
     };
 
-    // 페이지 로드 시 및 창 크기 변경 시 체크
     checkOverflow();
     window.addEventListener('resize', checkOverflow);
-}```
+}
