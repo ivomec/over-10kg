@@ -12,6 +12,9 @@
         @keyframes heartbeat { 0%{transform:scale(1)} 50%{transform:scale(1.07);text-shadow:0 0 15px rgba(255,82,82,.7)} 100%{transform:scale(1)} }
         @keyframes pulse { 0%{transform:scale(1)} 50%{transform:scale(1.05);text-shadow:0 0 15px rgba(255,107,107,.7)} 100%{transform:scale(1)} }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* 스와이프 힌트 애니메이션 */
+        @keyframes pulse-arrow { 0% { transform: translateX(0); } 50% { transform: translateX(5px); } 100% { transform: translateX(0); } }
+
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -25,6 +28,15 @@
         }
         .container { max-width: 900px; margin: 20px auto; padding: 15px; }
 
+        /* --- 하단 네비게이션 래퍼 (힌트 배치를 위함) --- */
+        .bottom-nav-wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
         /* --- 대시보드 탭 네비게이션 스타일 (모바일 우선 - 하단 탭) --- */
         .dashboard-nav {
             display: flex;
@@ -32,23 +44,19 @@
             overflow-x: auto;
             gap: 8px;
             padding: 10px 8px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
             background-color: #ffffff;
             box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
-            z-index: 1000;
             -webkit-overflow-scrolling: touch;
             border-top: 1px solid #e9ecef;
+            position: relative; /* 힌트와 겹치지 않게 */
         }
-        /* 스크롤바 숨기기 (선택사항) */
-        .dashboard-nav::-webkit-scrollbar {
-            display: none;
-        }
+        /* 스크롤바 숨기기 */
+        .dashboard-nav::-webkit-scrollbar { display: none; }
+        .dashboard-nav { scrollbar-width: none; }
+
 
         .nav-tab {
-            flex-shrink: 0; /* 탭이 줄어들지 않도록 설정 */
+            flex-shrink: 0;
             padding: 10px 16px;
             border: none;
             border-radius: 12px;
@@ -63,15 +71,40 @@
             white-space: nowrap;
         }
 
-        .nav-tab:hover {
-            background-color: #e9ecef;
-        }
-
+        .nav-tab:hover { background-color: #e9ecef; }
         .nav-tab.active {
             color: white;
             transform: translateY(0);
             box-shadow: 0 3px 8px rgba(0,0,0,0.1);
         }
+
+        /* --- 스와이프 힌트 스타일 --- */
+        .swipe-hint-indicator {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            pointer-events: none; /* 힌트가 탭 클릭을 방해하지 않도록 */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+            background: linear-gradient(to right, transparent, #ffffff 40%);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 5px;
+        }
+        .swipe-hint-indicator.show-hint {
+            opacity: 1;
+            visibility: visible;
+        }
+        .swipe-hint-indicator span {
+            font-size: 1.5em;
+            color: #868e96;
+            animation: pulse-arrow 1.5s infinite;
+        }
+
 
         /* 각 탭 활성화 시 색상 */
         #tab-main.active { background: linear-gradient(135deg, #81c7f5, #a092ed); }
@@ -84,13 +117,11 @@
 
         /* --- 데스크톱 뷰 (768px 이상) --- */
         @media (min-width: 768px) {
-            body {
-                /* 하단 탭 공간 제거 */
-                padding-bottom: 0;
-            }
+            body { padding-bottom: 0; }
+
+            .bottom-nav-wrapper { position: static; }
 
             .dashboard-nav {
-                /* 상단 탭으로 스타일 복원 */
                 position: static;
                 flex-wrap: wrap;
                 justify-content: center;
@@ -101,6 +132,7 @@
                 background-color: transparent;
                 border-top: none;
                 max-width: 900px;
+                overflow-x: hidden; /* 데스크탑에서는 스크롤 필요 없음 */
             }
             
             .nav-tab {
@@ -120,42 +152,17 @@
                 transform: translateY(-2px);
                 box-shadow: 0 6px 20px rgba(0,0,0,0.2);
             }
+            /* 데스크탑에서는 힌트 숨기기 */
+            .swipe-hint-indicator { display: none; }
         }
 
-        /* --- 건강검진 선택 버튼 스타일 --- */
-        .healthcheck-options {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        .option-btn {
-            padding: 10px 20px;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            background-color: #f8f9fa;
-            color: #555;
-            transition: all 0.3s ease;
-        }
-        .option-btn:hover {
-            border-color: #007bff;
-            color: #007bff;
-        }
-        .option-btn.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-        }
-
-        /* --- 콘텐츠 패널 스타일 --- */
+        /* --- (이하 나머지 CSS는 동일) --- */
+        .healthcheck-options { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
+        .option-btn { padding: 10px 20px; border: 2px solid #ccc; border-radius: 10px; font-size: 1em; font-weight: 700; cursor: pointer; background-color: #f8f9fa; color: #555; transition: all 0.3s ease; }
+        .option-btn:hover { border-color: #007bff; color: #007bff; }
+        .option-btn.active { background-color: #007bff; color: white; border-color: #007bff; box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); }
         .content-panel { display: none; }
         .content-panel.active { display: block; animation: fadeIn 0.5s; }
-        
-        /* --- 정보 안내 페이지 공통 스타일 --- */
         .info-page header { padding: 40px 20px; border-radius: 25px; text-align: center; margin-bottom: 30px; border: 3px solid white; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
         .info-page header h1 { margin: 0; font-size: 2.5em; font-weight: 900; }
         .info-page header p { margin: 10px 0 0; font-size: 1.2em; opacity: 0.95; }
@@ -181,7 +188,6 @@
         .info-page .kakao-btn { background-color: #FEE500; color: #3C1E1E; }
         .info-page .tel-btn { background-color: #4CAF50; }
         .youtube-btn { background-color: #FF0000; margin-bottom: 10px; }
-
         .important-notice { background: #fff5f5; border-left: 8px solid #fa5252; padding: 25px; margin-bottom: 30px; border-radius:15px; }
         .important-notice h2 { color: #c92a2a; }
         .important-notice ol { padding-left: 25px; }
@@ -190,8 +196,6 @@
         .important-notice strong { color: #d84315; }
         .important-notice .sub-list { padding-left: 20px; list-style-type: '✅ '; margin-top: 10px; font-size: 0.95em; color: #555;}
         .important-notice .sub-list li { margin-bottom: 8px;}
-
-        /* --- 페이지별 고유 스타일 (정보 안내 페이지) --- */
         #content-main header { background: linear-gradient(135deg, #81c7f5, #a092ed); }
         #content-procedure header { background: linear-gradient(135deg, #84fab0, #8fd3f4); } 
         #content-healthcheck-small header, #content-healthcheck-large header { background: linear-gradient(135deg, #69f0ae, #00e5ff); }
@@ -199,76 +203,22 @@
         #content-extraction-large header { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
         #content-addons-large header { background: linear-gradient(135deg, #f8bbd0, #b39ddb); }
         #content-nerve header { background: linear-gradient(135deg, #ff9a44, #ff5e62); }
-
         #content-extraction-large .price-value { color: #e64980; font-size: 1.2em; }
         #content-extraction-large .explanation-box { background: #fff0f6; border-left-color: #ff87c2; }
         #content-extraction-large .explanation-box h2 { color: #c2255c; }
-        
-        /* --- 수술 과정 타임라인 스타일 --- */
-        .procedure-timeline {
-            position: relative;
-            padding: 20px 0;
-            margin-top: 20px;
-        }
-        .procedure-timeline::before {
-            content: '';
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: #e9ecef;
-            border-radius: 2px;
-        }
-        .timeline-item {
-            position: relative;
-            margin-bottom: 25px;
-            padding-left: 55px;
-        }
-        .timeline-item::before {
-            content: attr(data-step);
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: #84fab0;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 4px solid white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .timeline-item h3 {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #00796b;
-            margin-bottom: 8px;
-            padding-top: 8px;
-        }
-        .timeline-item .timeline-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-            line-height: 1.7;
-            margin-top: 0;
-            border-left: 5px solid #84fab0;
-        }
-        .timeline-item strong {
-            color: #d84315;
-            font-weight: 700;
-        }
+        .procedure-timeline { position: relative; padding: 20px 0; margin-top: 20px; }
+        .procedure-timeline::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 4px; background: #e9ecef; border-radius: 2px; }
+        .timeline-item { position: relative; margin-bottom: 25px; padding-left: 55px; }
+        .timeline-item::before { content: attr(data-step); position: absolute; left: 0; top: 0; width: 42px; height: 42px; border-radius: 50%; background: #84fab0; color: white; font-weight: bold; font-size: 1.2em; display: flex; align-items: center; justify-content: center; border: 4px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .timeline-item h3 { font-size: 1.4em; font-weight: 700; color: #00796b; margin-bottom: 8px; padding-top: 8px; }
+        .timeline-item .timeline-content { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.07); line-height: 1.7; margin-top: 0; border-left: 5px solid #84fab0; }
+        .timeline-item strong { color: #d84315; font-weight: 700; }
     </style>
 </head>
 <body>
 
     <div class="dashboard-content">
-
+        <!-- (콘텐츠 패널들은 변경 없음) -->
         <div id="content-main" class="content-panel info-page">
             <div class="container">
                 <header>
@@ -301,7 +251,6 @@
                     <a href="https://www.youtube.com/watch?v=_mk6qOF7OEs" target="_blank" class="action-button youtube-btn">🎥 영상 보러가기</a>
                     <p style="text-align:center; margin-top:-5px; margin-bottom:25px; font-weight:bold;">※ 실제 저희 병원에서 진행되는 치과 수술의 모든 과정을 영상으로 확인해보세요!</p>
                     <div class="procedure-timeline">
-                        <!-- JS로 내용 채워짐 -->
                     </div>
                 </main>
             </div>
@@ -406,16 +355,24 @@
         
     </div>
     
-    <nav class="dashboard-nav">
-        <a href="#" class="nav-tab" id="tab-main" data-target="content-main">💖 병원소개</a>
-        <a href="#" class="nav-tab" id="tab-procedure" data-target="content-procedure">🏥 수술 과정</a>
-        <a href="#" class="nav-tab" id="tab-healthcheck-small" data-target="content-healthcheck-small">🩺 건강검진(10~20kg)</a>
-        <a href="#" class="nav-tab" id="tab-healthcheck-large" data-target="content-healthcheck-large">🩺 건강검진(20kg≥)</a>
-        <a href="#" class="nav-tab" id="tab-scaling" data-target="content-scaling">🦷 스케일링</a>
-        <a href="#" class="nav-tab" id="tab-extraction-large" data-target="content-extraction-large">😿 수술비용(10kg≥)</a>
-        <a href="#" class="nav-tab" id="tab-addons-large" data-target="content-addons-large">💊 추가처치(10kg≥)</a>
-        <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경 및 보존 치료</a>
-    </nav>
+    <!-- ▼▼▼ HTML 구조 변경 ▼▼▼ -->
+    <div class="bottom-nav-wrapper">
+        <nav class="dashboard-nav">
+            <a href="#" class="nav-tab" id="tab-main" data-target="content-main">💖 병원소개</a>
+            <a href="#" class="nav-tab" id="tab-procedure" data-target="content-procedure">🏥 수술 과정</a>
+            <a href="#" class="nav-tab" id="tab-healthcheck-small" data-target="content-healthcheck-small">🩺 건강검진(10~20kg)</a>
+            <a href="#" class="nav-tab" id="tab-healthcheck-large" data-target="content-healthcheck-large">🩺 건강검진(20kg≥)</a>
+            <a href="#" class="nav-tab" id="tab-scaling" data-target="content-scaling">🦷 스케일링</a>
+            <a href="#" class="nav-tab" id="tab-extraction-large" data-target="content-extraction-large">😿 수술비용(10kg≥)</a>
+            <a href="#" class="nav-tab" id="tab-addons-large" data-target="content-addons-large">💊 추가처치(10kg≥)</a>
+            <a href="#" class="nav-tab" id="tab-nerve" data-target="content-nerve">❤️‍🩹 신경 및 보존 치료</a>
+        </nav>
+        <!-- 스와이프 힌트 요소 추가 -->
+        <div id="swipe-hint" class="swipe-hint-indicator">
+            <span>›</span>
+        </div>
+    </div>
+    <!-- ▲▲▲ HTML 구조 변경 ▲▲▲ -->
     
     <script src="script.js" defer></script>
 
