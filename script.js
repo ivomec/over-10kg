@@ -1,9 +1,10 @@
 /*
-  [v7.0 최종 업데이트 내역]
-  - 요청사항 반영: 건강검진(10~20kg) 탭에 '흥분/공격성'이 강한 아이들을 위한 추가 설명란 추가.
-  - 요청사항 반영: 스케일링 탭 비용 안내에서 10kg 미만 항목 제거 및 10kg 이상 항목만 표시되도록 수정.
-  - 데이터 보강: 스케일링 탭에 예시 비용 데이터를 추가하여 필터링 로직이 정상 작동하도록 구현.
-  - 코드 개선: 콘텐츠 동적 생성 로직(populateContent)을 수정된 데이터 구조에 맞게 업데이트.
+  [v8.0 최종 업데이트 내역]
+  - 버그 수정: 이전 버전에서 누락되었던 건강검진 탭의 패키지 목록이 표시되지 않던 문제 해결.
+  - 기능 복구: 건강검진(10~20kg, 20kg 이상) 탭의 '사상충 검사 포함/제외' 버튼 기능 및 동적 콘텐츠 생성 로직 완벽 복구.
+  - 데이터 보강: 건강검진 탭에 표시될 패키지 예시 데이터(가격, 검사 항목 등) 추가.
+  - 기존 요청 반영: '건강검진(10~20kg)' 탭에 흥분/공격성이 강한 아이들을 위한 안내 문구 표시.
+  - 기존 요청 반영: '스케일링' 탭에서 10kg 이상 환자에게 해당하는 비용만 표시되도록 필터링.
 */
 document.addEventListener('DOMContentLoaded', () => {
     const hospitalData = {
@@ -60,6 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
       "healthCheckSmall": {
         "headerTitle": "마취 전 필수 건강검진 (10kg ~ 20kg)",
         "headerSubtitle": "우리 아이의 안전한 치과 치료를 위한 첫걸음입니다.",
+        "packages": {
+            "with4dx": [ { "name": "프리미엄 플러스 검진", "originalPrice": 250000, "discountPrice": 200000, "items": ["기본 혈액검사 (CBC, Chem)", "흉부 X-ray (2컷)", "혈압측정", "SDMA (신장 정밀)", "전해질 검사", "심장사상충(4Dx) 키트"] } ],
+            "without4dx": [ { "name": "프리미엄 검진", "originalPrice": 200000, "discountPrice": 160000, "items": ["기본 혈액검사 (CBC, Chem)", "흉부 X-ray (2컷)", "혈압측정", "SDMA (신장 정밀)", "전해질 검사"] } ]
+        },
         "agitatedDogContent": "<p>간혹 아이가 너무 긴장하거나 흥분해서 엑스레이 테이블 위에서 안전한 촬영 자세를 잡기 어려운 경우가 있습니다. 아이의 스트레스를 줄이고 안전한 검사를 진행하는 것이 최우선이므로, 이런 경우에는 보호자님과 상의 하에 부득이하게 엑스레이 검사를 제외한 <strong>'20kg 이상 건강검진' 항목으로 검사를 진행할 수 있습니다.</strong> 이는 아이의 안전을 위한 조치이오니, 보호자님의 너른 양해 부탁드립니다. 🙏</p>",
         "explanation": {
             "title": "💡 건강검진, 왜 중요할까요?",
@@ -69,11 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
       "healthCheckLarge": {
         "headerTitle": "마취 전 필수 건강검진 (20kg 이상)",
         "headerSubtitle": "우리 아이의 안전한 치과 치료를 위한 첫걸음입니다.",
+        "packages": {
+            "with4dx": [ { "name": "프리미엄 플러스 검진", "originalPrice": 220000, "discountPrice": 180000, "items": ["기본 혈액검사 (CBC, Chem)", "혈압측정", "SDMA (신장 정밀)", "전해질 검사", "심장사상충(4Dx) 키트"] } ],
+            "without4dx": [ { "name": "프리미엄 검진", "originalPrice": 170000, "discountPrice": 140000, "items": ["기본 혈액검사 (CBC, Chem)", "혈압측정", "SDMA (신장 정밀)", "전해질 검사"] } ]
+        },
+        "largeDogContent": "우리 듬직한 댕댕이들을 위한 플랜은 왜 따로 있냐구요~? 😚<br>몸집이 아주 큰 아이들은 일반 엑스레이 테이블에 올라가기가 어려워서, 부득이하게 엑스레이 검사를 제외한 맞춤 플랜으로 구성했답니다. 아이의 안전을 위한 결정이니 보호자님의 너른 양해 부탁드려요! 🙏",
         "explanation": {
             "title": "💡 꼭 확인해주세요! 추가 검사 안내 💡",
             "content": "안전한 마취를 위해서는 현재 아이의 건강 상태를 정확히 아는 것이 매우 중요합니다. 특히 간과 신장은 마취제 대사에 중요한 역할을 하므로, 기능 이상이 있는지 반드시 확인해야 합니다. 심장과 폐의 상태 역시 마취 위험도에 큰 영향을 미칩니다."
-        },
-        "largeDogContent": "우리 듬직한 댕댕이들을 위한 플랜은 왜 따로 있냐구요~? 😚<br>몸집이 아주 큰 아이들은 일반 엑스레이 테이블에 올라가기가 어려워서, 부득이하게 엑스레이 검사를 제외한 맞춤 플랜으로 구성했답니다. 아이의 안전을 위한 결정이니 보호자님의 너른 양해 부탁드려요! 🙏"
+        }
       },
       "scaling": {
         "headerTitle": "스케일링 비용 안내 (10kg 이상)",
@@ -132,6 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
         populateContent(hospitalData);
+        // ▼▼▼ 기능 복구: 건강검진 탭의 동적 콘텐츠를 처리하는 함수 호출 ▼▼▼
+        setupHealthCheckToggles(hospitalData);
     } catch (error) {
         console.error('데이터 처리 중 오류 발생:', error);
         alert('콘텐츠를 처리하는 데 실패했습니다. 코드에 문제가 없는지 확인해주세요.');
@@ -146,6 +157,74 @@ const formatPrice = (price) => {
     }
     return `${price}원`;
 };
+
+// ▼▼▼ 기능 복구: 건강검진 패키지를 동적으로 생성하고 버튼 이벤트를 처리하는 함수 ▼▼▼
+function setupHealthCheckToggles(data) {
+    const renderPackages = (size, with4dx) => {
+        const container = document.getElementById(`healthcheck-packages-${size}`);
+        if (!container) return;
+
+        const hcData = (size === 'small') ? data.healthCheckSmall : data.healthCheckLarge;
+        if (!hcData || !hcData.packages) {
+            container.innerHTML = '<p style="text-align:center; grid-column: 1 / -1;">검진 정보를 불러올 수 없습니다.</p>';
+            return;
+        }
+
+        const packagesToRender = with4dx ? hcData.packages.with4dx : hcData.packages.without4dx;
+        
+        container.innerHTML = packagesToRender.map(pkg => `
+            <div class="package-card" style="border-top-color: #69f0ae;">
+                <h3>${pkg.name}</h3>
+                <ul>${pkg.items.map(item => `<li class="price-item"><span class="price-label" style="justify-content:center;">- ${item}</span></li>`).join('')}</ul>
+                <div class="price-wrapper">
+                    ${pkg.originalPrice ? `<span class="original-price">${formatPrice(pkg.originalPrice)}</span>` : ''}
+                    <span class="discount-price heartbeat">${formatPrice(pkg.discountPrice)}</span>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    // 10~20kg 강아지 버튼 이벤트 리스너
+    const btnWith4dxSmall = document.getElementById('btn-healthcheck-with-4dx-small');
+    const btnWithout4dxSmall = document.getElementById('btn-healthcheck-without-4dx-small');
+    if (btnWith4dxSmall && btnWithout4dxSmall) {
+        btnWith4dxSmall.addEventListener('click', (e) => {
+            e.preventDefault();
+            btnWith4dxSmall.classList.add('active');
+            btnWithout4dxSmall.classList.remove('active');
+            renderPackages('small', true);
+        });
+        btnWithout4dxSmall.addEventListener('click', (e) => {
+            e.preventDefault();
+            btnWithout4dxSmall.classList.add('active');
+            btnWith4dxSmall.classList.remove('active');
+            renderPackages('small', false);
+        });
+        // 초기 로드 시 '사상충 검사 포함'을 기본으로 렌더링
+        renderPackages('small', true);
+    }
+
+    // 20kg 이상 강아지 버튼 이벤트 리스너
+    const btnWith4dxLarge = document.getElementById('btn-healthcheck-with-4dx-large');
+    const btnWithout4dxLarge = document.getElementById('btn-healthcheck-without-4dx-large');
+    if (btnWith4dxLarge && btnWithout4dxLarge) {
+        btnWith4dxLarge.addEventListener('click', (e) => {
+            e.preventDefault();
+            btnWith4dxLarge.classList.add('active');
+            btnWithout4dxLarge.classList.remove('active');
+            renderPackages('large', true);
+        });
+        btnWithout4dxLarge.addEventListener('click', (e) => {
+            e.preventDefault();
+            btnWithout4dxLarge.classList.add('active');
+            btnWith4dxLarge.classList.remove('active');
+            renderPackages('large', false);
+        });
+        // 초기 로드 시 '사상충 검사 포함'을 기본으로 렌더링
+        renderPackages('large', true);
+    }
+}
+
 
 function populateContent(data) {
     // --- 1. 메인 페이지 ---
@@ -203,7 +282,7 @@ function populateContent(data) {
         `).join('');
     }
 
-    // --- 3. 건강검진 (10kg ~ 20kg) ---
+    // --- 3. 건강검진 (10kg ~ 20kg) - 정적 콘텐츠 부분 ---
     if (data.healthCheckSmall) {
         const hc = data.healthCheckSmall;
         document.getElementById('healthcheck-header-title-small').textContent = hc.headerTitle;
@@ -220,7 +299,7 @@ function populateContent(data) {
         }
     }
     
-    // --- 4. 건강검진 (20kg 이상) ---
+    // --- 4. 건강검진 (20kg 이상) - 정적 콘텐츠 부분 ---
     if (data.healthCheckLarge) {
         const hc = data.healthCheckLarge;
         document.getElementById('healthcheck-header-title-large').textContent = hc.headerTitle;
