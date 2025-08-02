@@ -60,14 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "healthCheckSmall": {
         "headerTitle": "마취 전 필수 건강검진 (10kg ~ 20kg)",
         "headerSubtitle": "우리 아이의 안전한 치과 치료를 위한 첫걸음입니다.",
-        // --- ▼▼▼ JS 수정: 흥분/공격성 강한 아이를 위한 안내 문구 추가 ▼▼▼ ---
         "agitatedDogContent": "<p>간혹 아이가 너무 긴장하거나 흥분해서 엑스레이 테이블 위에서 안전한 촬영 자세를 잡기 어려운 경우가 있습니다. 아이의 스트레스를 줄이고 안전한 검사를 진행하는 것이 최우선이므로, 이런 경우에는 보호자님과 상의 하에 부득이하게 엑스레이 검사를 제외한 <strong>'20kg 이상 건강검진' 항목으로 검사를 진행할 수 있습니다.</strong> 이는 아이의 안전을 위한 조치이오니, 보호자님의 너른 양해 부탁드립니다. 🙏</p>",
         "explanation": {
             "title": "💡 건강검진, 왜 중요할까요?",
             "content": "안전한 마취를 위해서는 현재 아이의 건강 상태를 정확히 아는 것이 매우 중요합니다. 특히 간과 신장은 마취제 대사에 중요한 역할을 하므로, 기능 이상이 있는지 반드시 확인해야 합니다. 심장과 폐의 상태 역시 마취 위험도에 큰 영향을 미칩니다."
         }
       },
-      // --- ▲▲▲ JS 수정 완료 ▲▲▲ ---
       "healthCheckLarge": {
         "headerTitle": "마취 전 필수 건강검진 (20kg 이상)",
         "headerSubtitle": "우리 아이의 안전한 치과 치료를 위한 첫걸음입니다.",
@@ -80,14 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "scaling": {
         "headerTitle": "스케일링 비용 안내 (10kg 이상)",
         "headerSubtitle": "치석 제거만으로도 아이의 구강 건강을 지킬 수 있습니다.",
-        // --- ▼▼▼ JS 수정: 10kg 이상 데이터만 남도록 예시 데이터 추가 및 필터링 예정 ▼▼▼ ---
         "packages": [
             { "category": "🐶 5kg 미만 🐶", "name": "기본 스케일링", "price": 150000, "items": ["스케일링", "폴리싱", "기본 구강검사"] },
             { "category": "🐕 5kg ~ 10kg 미만 🐕", "name": "기본 스케일링", "price": 180000, "items": ["스케일링", "폴리싱", "기본 구강검사"] },
             { "category": "🐩 10kg 이상 🐩", "name": "기본 스케일링", "price": 220000, "items": ["스케일링", "폴리싱", "정밀 구강검사", "치과 엑스레이(2장)"] },
             { "category": "🐩 10kg 이상 🐩", "name": "프리미엄 스케일링", "price": 300000, "items": ["스케일링", "폴리싱", "정밀 구강검사", "치과 엑스레이(Full-mouth)", "불소도포"] }
         ],
-        // --- ▲▲▲ JS 수정 완료 ▲▲▲ ---
         "explanation": {
             "title": "💡 스케일링, 꼭 해야 할까요?",
             "content": "치석은 단순한 치아의 때가 아니라, 수많은 세균 덩어리입니다. 방치할 경우 잇몸 염증을 일으키고, 심하면 치아를 지지하는 뼈를 녹여 발치로 이어질 수 있습니다. 또한, 치석 세균이 혈관을 타고 전신으로 퍼져 심장, 신장 등에 심각한 질병을 유발할 수도 있습니다. 정기적인 스케일링은 이러한 위험을 예방하는 가장 효과적인 방법입니다."
@@ -213,7 +209,6 @@ function populateContent(data) {
         document.getElementById('healthcheck-header-title-small').textContent = hc.headerTitle;
         document.getElementById('healthcheck-header-subtitle-small').textContent = hc.headerSubtitle;
 
-        // ▼▼▼ JS 수정: 추가된 설명 섹션 내용 채우기 ▼▼▼
         const agitatedDogBox = document.getElementById('small-dog-agitated-explanation');
         if (agitatedDogBox && hc.agitatedDogContent) {
             agitatedDogBox.innerHTML = `<h2 style="color: #fb8c00;">😥 흥분이 심하거나 사나워서 검사가 힘든 경우</h2>${hc.agitatedDogContent}`;
@@ -223,7 +218,6 @@ function populateContent(data) {
         if (expBox && hc.explanation) {
             expBox.innerHTML = `<h2>${hc.explanation.title}</h2><p>${hc.explanation.content}</p>`;
         }
-        // ▲▲▲ JS 수정 완료 ▲▲▲
     }
     
     // --- 4. 건강검진 (20kg 이상) ---
@@ -244,7 +238,6 @@ function populateContent(data) {
         document.getElementById('scaling-explanation-title').textContent = sc.explanation.title;
         document.getElementById('scaling-explanation-content').innerHTML = `<p>${sc.explanation.content}</p>`;
         
-        // ▼▼▼ JS 수정: 10kg 이상 패키지만 필터링하여 표시 ▼▼▼
         const scalingPackagesGrid = document.getElementById('scaling-packages');
         const relevantPackages = sc.packages.filter(pkg => pkg.category.includes('10kg 이상'));
 
@@ -263,7 +256,6 @@ function populateContent(data) {
         } else {
             scalingPackagesGrid.innerHTML = `<p style="text-align:center; grid-column: 1 / -1;">10kg 이상 강아지를 위한 스케일링 비용 정보가 곧 업데이트될 예정입니다. 병원으로 문의해주세요.</p>`;
         }
-        // ▲▲▲ JS 수정 완료 ▲▲▲
     }
     
     // --- 6. 발치 ---
