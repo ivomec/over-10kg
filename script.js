@@ -4,6 +4,7 @@
   - UI 개선: 건강검진 및 스케일링 패키지 항목을 이모티콘과 함께 세련된 스타일로 변경
   - UI 개선: '모니터링' 선택 시 가독성을 높이기 위해 배경색 및 글자색 강조 로직 수정
   - 기능 수정: 전체 비용 내역 표시에 건강검진 및 스케일링 비용을 별도 항목으로 분리
+  - [오류 수정] populateContent 함수에서 HTML 요소가 없을 경우를 대비한 방어 코드 추가
 */
 document.addEventListener('DOMContentLoaded', () => {
     const hospitalData = {
@@ -281,6 +282,7 @@ const formatPrice = (price) => {
 
 function populateContent(data) {
     if (!data) return;
+    // --- 메인 페이지 ---
     if (data.main) {
         document.getElementById('main-header-title').innerHTML = data.main.headerTitle;
         document.getElementById('main-header-subtitle').innerHTML = data.main.headerSubtitle;
@@ -338,132 +340,207 @@ function populateContent(data) {
                 <a href="${data.main.footer.telLink}" class="action-button tel-btn">📞 ${data.main.contact.phone}</a>`;
         }
     }
+    // --- 수술 과정 ---
     if (data.procedure) {
-        document.querySelector('#content-procedure .procedure-timeline').innerHTML = data.procedure.map(item => `
-            <div class="timeline-item" data-step="${item.step}">
-                <h3>${item.title}</h3>
-                <div class="timeline-content">${item.content}</div>
-            </div>
-        `).join('');
+        const timeline = document.querySelector('#content-procedure .procedure-timeline');
+        if(timeline) {
+            timeline.innerHTML = data.procedure.map(item => `
+                <div class="timeline-item" data-step="${item.step}">
+                    <h3>${item.title}</h3>
+                    <div class="timeline-content">${item.content}</div>
+                </div>
+            `).join('');
+        }
     }
 
+    // --- 건강검진 (<20kg) ---
     if (data.healthCheck) {
         const with4dxBtn = document.getElementById('btn-healthcheck-with-4dx-small');
         const without4dxBtn = document.getElementById('btn-healthcheck-without-4dx-small');
         
-        document.getElementById('healthcheck-header-title-small').innerHTML = data.healthCheck.headerTitle;
-        document.getElementById('healthcheck-header-subtitle-small').innerHTML = data.healthCheck.headerSubtitle;
-        const explanationBoxSmall = document.getElementById('healthcheck-explanation-box-small');
-        explanationBoxSmall.innerHTML = `
-            <h2>${data.healthCheck.explanation.title}</h2>
-            <div>${(data.healthCheck.explanation.content || []).map(p => `<p>${p}</p>`).join('')}</div>
-        `;
+        const headerTitle = document.getElementById('healthcheck-header-title-small');
+        if (headerTitle) headerTitle.innerHTML = data.healthCheck.headerTitle;
 
+        const headerSubtitle = document.getElementById('healthcheck-header-subtitle-small');
+        if (headerSubtitle) headerSubtitle.innerHTML = data.healthCheck.headerSubtitle;
+
+        const explanationBoxSmall = document.getElementById('healthcheck-explanation-box-small');
+        if (explanationBoxSmall) {
+            explanationBoxSmall.innerHTML = `
+                <h2>${data.healthCheck.explanation.title}</h2>
+                <div>${(data.healthCheck.explanation.content || []).map(p => `<p>${p}</p>`).join('')}</div>
+            `;
+        }
+        
         renderHealthCheckPackages('small', data.healthCheck.packagesWith4Dx);
         
-        with4dxBtn.addEventListener('click', () => {
-            renderHealthCheckPackages('small', data.healthCheck.packagesWith4Dx);
-            with4dxBtn.classList.add('active');
-            without4dxBtn.classList.remove('active');
-        });
-        without4dxBtn.addEventListener('click', () => {
-            renderHealthCheckPackages('small', data.healthCheck.packagesWithout4Dx);
-            without4dxBtn.classList.add('active');
-            with4dxBtn.classList.remove('active');
-        });
+        if (with4dxBtn && without4dxBtn) {
+            with4dxBtn.addEventListener('click', () => {
+                renderHealthCheckPackages('small', data.healthCheck.packagesWith4Dx);
+                with4dxBtn.classList.add('active');
+                without4dxBtn.classList.remove('active');
+            });
+            without4dxBtn.addEventListener('click', () => {
+                renderHealthCheckPackages('small', data.healthCheck.packagesWithout4Dx);
+                without4dxBtn.classList.add('active');
+                with4dxBtn.classList.remove('active');
+            });
+        }
     }
 
+    // --- 건강검진 (20kg>=) ---
     if (data.healthCheckLarge) {
         const with4dxBtnLg = document.getElementById('btn-healthcheck-with-4dx-large');
         const without4dxBtnLg = document.getElementById('btn-healthcheck-without-4dx-large');
         
-        document.getElementById('healthcheck-header-title-large').innerHTML = data.healthCheckLarge.headerTitle;
-        document.getElementById('healthcheck-header-subtitle-large').innerHTML = data.healthCheckLarge.headerSubtitle;
-        document.getElementById('large-dog-explanation-content').innerHTML = data.healthCheckLarge.largeDogExplanation;
+        const headerTitle = document.getElementById('healthcheck-header-title-large');
+        if (headerTitle) headerTitle.innerHTML = data.healthCheckLarge.headerTitle;
+        
+        const headerSubtitle = document.getElementById('healthcheck-header-subtitle-large');
+        if(headerSubtitle) headerSubtitle.innerHTML = data.healthCheckLarge.headerSubtitle;
+
+        const largeDogExplanation = document.getElementById('large-dog-explanation-content');
+        if(largeDogExplanation) largeDogExplanation.innerHTML = data.healthCheckLarge.largeDogExplanation;
+
         const explanationBoxLarge = document.getElementById('healthcheck-explanation-box-large');
-        explanationBoxLarge.innerHTML = `
-            <h2>${data.healthCheckLarge.explanation.title}</h2>
-            <div>${(data.healthCheckLarge.explanation.content || []).map(p => `<p>${p}</p>`).join('')}</div>
-        `;
+        if (explanationBoxLarge) {
+            explanationBoxLarge.innerHTML = `
+                <h2>${data.healthCheckLarge.explanation.title}</h2>
+                <div>${(data.healthCheckLarge.explanation.content || []).map(p => `<p>${p}</p>`).join('')}</div>
+            `;
+        }
         
         renderHealthCheckPackages('large', data.healthCheckLarge.packagesWith4Dx);
         
-        with4dxBtnLg.addEventListener('click', () => {
-            renderHealthCheckPackages('large', data.healthCheckLarge.packagesWith4Dx);
-            with4dxBtnLg.classList.add('active');
-            without4dxBtnLg.classList.remove('active');
-        });
-        without4dxBtnLg.addEventListener('click', () => {
-            renderHealthCheckPackages('large', data.healthCheckLarge.packagesWithout4Dx);
-            without4dxBtnLg.classList.add('active');
-            with4dxBtnLg.classList.remove('active');
-        });
+        if (with4dxBtnLg && without4dxBtnLg) {
+            with4dxBtnLg.addEventListener('click', () => {
+                renderHealthCheckPackages('large', data.healthCheckLarge.packagesWith4Dx);
+                with4dxBtnLg.classList.add('active');
+                without4dxBtnLg.classList.remove('active');
+            });
+            without4dxBtnLg.addEventListener('click', () => {
+                renderHealthCheckPackages('large', data.healthCheckLarge.packagesWithout4Dx);
+                without4dxBtnLg.classList.add('active');
+                with4dxBtnLg.classList.remove('active');
+            });
+        }
     }
 
+    // --- 스케일링 ---
     if (data.scaling) {
-        document.getElementById('scaling-header-title').innerHTML = data.scaling.headerTitle;
-        document.getElementById('scaling-header-subtitle').innerHTML = data.scaling.headerSubtitle;
-        document.getElementById('scaling-packages').innerHTML = data.scaling.packages.map(pkg => `
-            <div class="package-card" style="border-top-color:${pkg.borderColor}">
-                <h3 style="color:${pkg.borderColor}">${pkg.title}</h3>
-                <ul style="list-style: none; padding-left: 0;">${(pkg.items || []).map(item => `<li style="margin-bottom: 10px; font-size: 1.1em;">${item}</li>`).join('')}</ul>
-                <div class="price-wrapper">
-                    <span class="original-price">${formatPrice(pkg.originalPrice)}</span>
-                    <span class="discount-price pulse">👑 ${pkg.discountPrice.toLocaleString('ko-KR')}원</span>
+        const scalingHeaderTitle = document.getElementById('scaling-header-title');
+        if (scalingHeaderTitle) scalingHeaderTitle.innerHTML = data.scaling.headerTitle;
+        
+        const scalingHeaderSubtitle = document.getElementById('scaling-header-subtitle');
+        if(scalingHeaderSubtitle) scalingHeaderSubtitle.innerHTML = data.scaling.headerSubtitle;
+        
+        const scalingPackages = document.getElementById('scaling-packages');
+        if (scalingPackages) {
+            scalingPackages.innerHTML = data.scaling.packages.map(pkg => `
+                <div class="package-card" style="border-top-color:${pkg.borderColor}">
+                    <h3 style="color:${pkg.borderColor}">${pkg.title}</h3>
+                    <ul style="list-style: none; padding-left: 0;">${(pkg.items || []).map(item => `<li style="margin-bottom: 10px; font-size: 1.1em;">${item}</li>`).join('')}</ul>
+                    <div class="price-wrapper">
+                        <span class="original-price">${formatPrice(pkg.originalPrice)}</span>
+                        <span class="discount-price pulse">👑 ${pkg.discountPrice.toLocaleString('ko-KR')}원</span>
+                    </div>
                 </div>
-            </div>
-        `).join('');
-        document.getElementById('scaling-explanation-title').innerHTML = data.scaling.explanation.title;
-        document.getElementById('scaling-explanation-content').innerHTML = (data.scaling.explanation.content || []).map(p => `<p>${p}</p>`).join('');
+            `).join('');
+        }
+        const scalingExplanationTitle = document.getElementById('scaling-explanation-title');
+        if(scalingExplanationTitle) scalingExplanationTitle.innerHTML = data.scaling.explanation.title;
+
+        const scalingExplanationContent = document.getElementById('scaling-explanation-content');
+        if(scalingExplanationContent) scalingExplanationContent.innerHTML = (data.scaling.explanation.content || []).map(p => `<p>${p}</p>`).join('');
     }
 
+    // --- 발치 (오류 수정된 부분) ---
     if(data.extraction) {
         const setupExtractionTab = (size, costData) => {
-            document.getElementById(`extraction-header-title-${size}`).innerHTML = data.extraction.headerTitle;
-            document.getElementById(`extraction-header-subtitle-${size}`).innerHTML = costData.headerSubtitle;
-            document.getElementById(`extraction-costs-${size}`).innerHTML = costData.items.map(cost => {
-                const priceInfo = (cost.prices || []).map(p => `<div class="price-item"><span class="price-label">${p.label}</span> <span class="price-value">${formatPrice(p.value)}</span></div>`).join('');
-                return `<div class="cost-card"><h3>${cost.title}</h3><div class="price-wrapper" style="border-top:none;padding-top:0;">${priceInfo}</div></div>`;
-            }).join('');
-            document.getElementById(`extraction-explanation-title-${size}`).innerHTML = data.extraction.explanation.title;
-            document.getElementById(`extraction-explanation-content-${size}`).innerHTML = (data.extraction.explanation.content || []).map(p => `<p>${p}</p>`).join('');
+            // 요소를 찾고, 존재하는 경우에만 innerHTML을 설정합니다.
+            const headerTitleEl = document.getElementById(`extraction-header-title-${size}`);
+            if (headerTitleEl) headerTitleEl.innerHTML = data.extraction.headerTitle;
+
+            const headerSubtitleEl = document.getElementById(`extraction-header-subtitle-${size}`);
+            if (headerSubtitleEl) headerSubtitleEl.innerHTML = costData.headerSubtitle;
+
+            const costsGridEl = document.getElementById(`extraction-costs-${size}`);
+            if (costsGridEl) {
+                costsGridEl.innerHTML = costData.items.map(cost => {
+                    const priceInfo = (cost.prices || []).map(p => `<div class="price-item"><span class="price-label">${p.label}</span> <span class="price-value">${formatPrice(p.value)}</span></div>`).join('');
+                    return `<div class="cost-card"><h3>${cost.title}</h3><div class="price-wrapper" style="border-top:none;padding-top:0;">${priceInfo}</div></div>`;
+                }).join('');
+            }
+            
+            const explanationTitleEl = document.getElementById(`extraction-explanation-title-${size}`);
+            if(explanationTitleEl) explanationTitleEl.innerHTML = data.extraction.explanation.title;
+
+            const explanationContentEl = document.getElementById(`extraction-explanation-content-${size}`);
+            if(explanationContentEl) explanationContentEl.innerHTML = (data.extraction.explanation.content || []).map(p => `<p>${p}</p>`).join('');
         };
+
+        // 'small'과 'large' 모두에 대해 함수를 호출하되, HTML 요소가 없어도 오류가 나지 않습니다.
         setupExtractionTab('small', data.extraction.costsSmall);
         setupExtractionTab('large', data.extraction.costsLarge);
     }
   
+    // --- 추가 처치 (오류 수정된 부분) ---
     if(data.addons) {
         const setupAddonsTab = (size, costData) => {
-            document.getElementById(`addons-header-title-${size}`).innerHTML = costData.headerTitle;
-            document.getElementById(`addons-header-subtitle-${size}`).innerHTML = costData.headerSubtitle;
-            document.getElementById(`addons-costs-${size}`).innerHTML = costData.items.map(cost => `
-                <div class="cost-card" style="border-top-color:${cost.borderColor}">
-                    <h3 style="color:${cost.borderColor}">${cost.title}</h3>
-                    <div class="price-wrapper" style="text-align: right; border-top: none; padding-top: 0;">
-                        ${(cost.prices || []).map(p => `<div class="price-item"><span class="price-label">${p.label}</span> <span class="price-value">${p.value}</span></div>`).join('')}
+            const headerTitleEl = document.getElementById(`addons-header-title-${size}`);
+            if (headerTitleEl) headerTitleEl.innerHTML = costData.headerTitle;
+            
+            const headerSubtitleEl = document.getElementById(`addons-header-subtitle-${size}`);
+            if (headerSubtitleEl) headerSubtitleEl.innerHTML = costData.headerSubtitle;
+
+            const costsGridEl = document.getElementById(`addons-costs-${size}`);
+            if (costsGridEl) {
+                costsGridEl.innerHTML = costData.items.map(cost => `
+                    <div class="cost-card" style="border-top-color:${cost.borderColor}">
+                        <h3 style="color:${cost.borderColor}">${cost.title}</h3>
+                        <div class="price-wrapper" style="text-align: right; border-top: none; padding-top: 0;">
+                            ${(cost.prices || []).map(p => `<div class="price-item"><span class="price-label">${p.label}</span> <span class="price-value">${p.value}</span></div>`).join('')}
+                        </div>
                     </div>
-                </div>
-            `).join('');
-            document.getElementById(`addons-explanation-title-${size}`).innerHTML = costData.explanation.title;
-            document.getElementById(`addons-explanation-content-${size}`).innerHTML = (costData.explanation.content || []).map(p => `<p>${p}</p>`).join('');
+                `).join('');
+            }
+
+            const explanationTitleEl = document.getElementById(`addons-explanation-title-${size}`);
+            if (explanationTitleEl) explanationTitleEl.innerHTML = costData.explanation.title;
+            
+            const explanationContentEl = document.getElementById(`addons-explanation-content-${size}`);
+            if (explanationContentEl) explanationContentEl.innerHTML = (costData.explanation.content || []).map(p => `<p>${p}</p>`).join('');
         };
+        
         setupAddonsTab('small', data.addons.costsSmall);
         setupAddonsTab('large', data.addons.costsLarge);
     }
   
+    // --- 신경 치료 ---
     if(data.nerve) {
-        document.getElementById('nerve-header-title').innerHTML = data.nerve.headerTitle;
-        document.getElementById('nerve-header-subtitle').innerHTML = data.nerve.headerSubtitle;
-        document.getElementById('nerve-costs').innerHTML = data.nerve.costs.map(cost => `
-            <div class="cost-card" style="border-top-color:${cost.borderColor}">
-                <h3 style="color:${cost.borderColor}">${cost.title}</h3>
-                <div class="price-wrapper" style="border-top:none; padding-top:0;">
-                    ${(cost.prices || []).map(p => `<div class="price-item"><span class="price-label">${p.label}</span> <span class="price-value" style="color:#fa5252;font-size:1.3em">${formatPrice(p.value)}</span></div>`).join('')}
+        const nerveHeaderTitle = document.getElementById('nerve-header-title');
+        if (nerveHeaderTitle) nerveHeaderTitle.innerHTML = data.nerve.headerTitle;
+
+        const nerveHeaderSubtitle = document.getElementById('nerve-header-subtitle');
+        if (nerveHeaderSubtitle) nerveHeaderSubtitle.innerHTML = data.nerve.headerSubtitle;
+        
+        const nerveCosts = document.getElementById('nerve-costs');
+        if (nerveCosts) {
+            nerveCosts.innerHTML = data.nerve.costs.map(cost => `
+                <div class="cost-card" style="border-top-color:${cost.borderColor}">
+                    <h3 style="color:${cost.borderColor}">${cost.title}</h3>
+                    <div class="price-wrapper" style="border-top:none; padding-top:0;">
+                        ${(cost.prices || []).map(p => `<div class="price-item"><span class="price-label">${p.label}</span> <span class="price-value" style="color:#fa5252;font-size:1.3em">${formatPrice(p.value)}</span></div>`).join('')}
+                    </div>
                 </div>
-            </div>
-        `).join('');
-        document.getElementById('nerve-explanation-title').innerHTML = data.nerve.explanation.title;
-        document.getElementById('nerve-explanation-content').innerHTML = (data.nerve.explanation.content || []).map(p => `<p>${p}</p>`).join('');
+            `).join('');
+        }
+        
+        const nerveExplanationTitle = document.getElementById('nerve-explanation-title');
+        if (nerveExplanationTitle) nerveExplanationTitle.innerHTML = data.nerve.explanation.title;
+        
+        const nerveExplanationContent = document.getElementById('nerve-explanation-content');
+        if (nerveExplanationContent) nerveExplanationContent.innerHTML = (data.nerve.explanation.content || []).map(p => `<p>${p}</p>`).join('');
     }
 }
 
@@ -486,34 +563,23 @@ function renderHealthCheckPackages(size, packages) {
 function setupPageNavigation() {
     const navTabs = document.querySelectorAll('.nav-tab');
     const contentPanels = document.querySelectorAll('.content-panel');
-    
+
     function showContent(targetId) {
-        // 모든 컨텐츠 패널을 숨깁니다.
-        contentPanels.forEach(panel => {
-            panel.classList.remove('active');
-        });
-
-        // 모든 탭의 활성 상태를 제거합니다.
-        navTabs.forEach(tab => {
-            tab.classList.remove('active');
-        });
-
-        // 목표 컨텐츠 패널을 찾아 활성화합니다.
+        contentPanels.forEach(panel => panel.classList.remove('active'));
+        navTabs.forEach(tab => tab.classList.remove('active'));
+        
         const targetContent = document.getElementById(targetId);
         if (targetContent) {
             targetContent.classList.add('active');
         }
-
-        // 목표 컨텐츠를 가리키는 탭을 찾아 활성화합니다.
+        
         const activeTab = document.querySelector(`.nav-tab[data-target="${targetId}"]`);
         if (activeTab) {
             activeTab.classList.add('active');
         }
         
-        // --- 💡 수정된 부분 시작 💡 ---
-        // 페이지 상단으로 스크롤하여 사용자가 콘텐츠 변경을 즉시 인지하게 합니다.
+        // 탭 변경 시 화면을 맨 위로 스크롤
         window.scrollTo(0, 0);
-        // --- 💡 수정된 부분 끝 💡 ---
     }
 
     navTabs.forEach(tab => {
@@ -526,10 +592,10 @@ function setupPageNavigation() {
             showContent(targetId);
         });
     });
+    
     // 초기 페이지 로드
     showContent('content-main');
 }
-
 
 function initCalculator(data) {
     const page = document.querySelector('#Calculator-Page');
@@ -1299,7 +1365,7 @@ function initCalculator(data) {
 function copyCalculatorDataTo(targetId) {
     const calculatorCaptureArea = document.querySelector('#Calculator-Page .capture-area');
     const targetPanel = document.getElementById(targetId);
-    if (!targetPanel) return;
+    if (!calculatorCaptureArea || !targetPanel) return;
     const targetCaptureArea = targetPanel.querySelector('.capture-area');
     if (!targetCaptureArea) return;
     
