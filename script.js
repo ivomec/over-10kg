@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "headerSubtitle": "💖 10kg 이상 아이들을 위한 맞춤 케어 비용 안내 💖",
            "items": [
               { "borderColor": "#f06292", "title": "🪄 통증 관리", "prices": [
-                  { "label": "⏰ 마취시간 연장 (30분당)", "value": "55,000원 ~" }, 
+                  { "label": "⏰ 마취시간 연장 (1시간 이내)", "value": "132,000원 ~" }, 
                   { "label": "📍 국소마취 (1~4 site)", "value": "12,000 ~ 23,000원" }, 
                   { "label": "❤️‍🩹 마약성 진통 혈관주사", "value": "26,000 ~ 28,000원" },
                   { "label": "🕒 24시간 지속 진통 주사", "value": "25,000 ~ 30,000원" },
